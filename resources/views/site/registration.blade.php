@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pendaftaran Siswa Baru - Pagar Nusa Ulul-Albab</title>
     
-    <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -19,7 +17,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f4f7f6; /* Warna latar abu-abu terang */
+            background-color: #f4f7f6;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -79,15 +77,13 @@
         </div>
         
         <div class="card-body p-4 p-md-5">
-            if(@session('sukses'))
+            @if(@session('sukses'))
                 <div class="alert alert-success">
                     {{ session('sukses')}}
                 </div>
             @endif
                 
-            <!-- Form ini nanti akan dikirim ke backend. Untuk sekarang action-nya dikosongkan dulu -->
             <form action="/pendaftaran" method="POST">
-                <!-- @csrf adalah token keamanan Laravel (wajib untuk form POST) -->
                 @csrf
                 
                 <div class="mb-3">

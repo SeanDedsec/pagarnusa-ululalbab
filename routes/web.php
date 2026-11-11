@@ -1,15 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\auth\LoginController;
 
-// Halaman Beranda
+/*halaman public*/
 Route::get('/', function () {
-    return view('site.home'); // Titik berarti folder site, lalu file home
+    return view('site.home');
 });
 
-// Halaman Pendaftaran
 Route::get('/pendaftaran', function () {
-    return view('site.registration'); // Mengarah ke registration.blade.php
+    return view('site.registration');
 });
 
 Route::post('/pendaftaran', [RegistrationController::class, 'store'])->name('pendaftaran.store');
+
+/*halaman admin*/
+Route::get('/admin/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/admin/login', [LoginController::class, 'login']);
+Route::post('/admin/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/admin/dashboard', function () {
+    return "Halaman Dashboard Admin (Berhasil Login sebagai: " . Auth::user()->nama_lengkap . ")";
+})->middleware('auth');
