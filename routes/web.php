@@ -19,5 +19,5 @@ Route::get('/admin/login', [LoginController::class, 'showLoginForm'])->name('log
 Route::post('/admin/login', [LoginController::class, 'login']);
 Route::post('/admin/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/admin/dashboard', function () {
-    return "Halaman Dashboard Admin (Berhasil Login sebagai: " . Auth::user()->nama_lengkap . ")";
+    return view('admin.pages.dashboard');
 })->middleware('auth');
