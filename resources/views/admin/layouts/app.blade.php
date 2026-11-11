@@ -100,7 +100,7 @@
                         <a class="nav-link" href="#"><i class="fas fa-wallet"></i> Kelola Keuangan</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-user-graduate"></i> Data Siswa</a>
+                        <a class="nav-link {{ request()->is('admin/siswa') ? 'active' : '' }}" href="/admin/siswa"><i class="fas fa-user-graduate"></i> Data Siswa</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="fas fa-user-tie"></i> Data Pelatih</a>
@@ -175,5 +175,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    @@stack('scripts')
 </body>
 </html>

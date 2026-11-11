@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('alamat');
             $table->string('no_hp');
             $table->date('tanggal_lahir');
-            $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
+            $table->enum('status', ['pending', 'aktif', 'nonaktif'])->default('pending');
             $table->timestamps();
         });
     }
