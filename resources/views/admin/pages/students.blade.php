@@ -53,6 +53,12 @@
                                 <i class="fas fa-edit"></i>
                             </button>
 
+                            <button class="btn btn-sm btn-warning text-dark fw-bold" data-bs-toggle="modal" data-bs-target="#modalAbsensi"
+                                data-id="{{ $s->id }}" 
+                                data-nama="{{ $s->nama_siswa }}">
+                                <i class="fas fa-clipboard-check"></i> Absen/Kas
+                            </button>
+
                             <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalHapus"
                                 data-id="{{ $s->id }}" 
                                 data-nama="{{ $s->nama_siswa }}">
@@ -149,6 +155,57 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalAbsensi" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/admin/absensi" method="POST">
+                    @csrf
+                    <input type="hidden" name="siswa_id" id="absen_siswa_id">
+                    
+                    <div class="modal-header bg-warning">
+                        <h5 class="modal-title text-dark fw-bold">Absensi & Kas: <span id="absen_nama_siswa"></span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Pilih Jadwal Latihan</label>
+                            <select name="jadwal_id" class="form-select" required>
+                                <!-- Nanti kita isi otomatis dari database melalui Controller, sementara statis dulu -->
+                                <option value="1">Minggu Sore (15:00 - 17:00)</option>
+                                <option value="2">Kamis Sore (15:00 - 17:00)</option>
+                                <option value="3">Senin Malam (19:00 - 21:00)</option>
+                                <option value="4">Kamis Malam (19:00 - 21:00)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tanggal Latihan</label>
+                            <input type="date" name="tanggal" class="form-control" value="{{ date('Y-m-d') }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Status Kehadiran</label>
+                            <select name="status_kehadiran" class="form-select" required>
+                                <option value="hadir">Hadir</option>
+                                <option value="izin">Izin</option>
+                                <option value="sakit">Sakit</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nominal Kas (Rp)</label>
+                            <!-- Default 5000, bisa diubah manual -->
+                            <input type="number" name="nominal_kas" class="form-control" value="5000" required>
+                            <small class="text-muted">Ubah menjadi 0 jika siswa tidak membayar kas.</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-warning fw-bold text-dark">Simpan Absensi & Kas</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('scripts')
@@ -182,6 +239,16 @@
 
             document.getElementById('formHapus').action = '/admin/siswa/' + id;
             document.getElementById('hapus_nama').textContent = nama;
+        });
+
+        var modalAbsensi = document.getElementById('modalAbsensi');
+        modalAbsensi.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var id = button.getAttribute('data-id');
+            var nama = button.getAttribute('data-nama');
+
+            document.getElementById('absen_siswa_id').value = id;
+            document.getElementById('absen_nama_siswa').textContent = nama;
         });
     });
 </script>
