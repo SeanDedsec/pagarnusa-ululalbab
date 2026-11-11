@@ -11,3 +11,5 @@ Route::get('/', function () {
 Route::get('/pendaftaran', function () {
     return view('site.registration'); // Mengarah ke registration.blade.php
 });
+
+Route::post('/pendaftaran', [RegistrationController::class, 'store'])->name('pendaftaran.store');
