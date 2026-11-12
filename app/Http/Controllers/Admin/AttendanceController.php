@@ -50,4 +50,31 @@ class AttendanceController extends Controller
             return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
         }
     }
+
+        public function index(Request $request)
+    {
+        $query = Absensi::with(['siswa', 'jadwal'])->orderBy('tanggal', 'desc');
+
+        if ($request->filled('tanggal_mulai')) {
+            $query->whereDate('tanggal', '>=', $request->tanggal_mulai);
+        }
+
+        if ($request->filled('tanggal_akhir')) {
+            $query->whereDate('tanggal', '<=', $request->tanggal_akhir);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status_kehadiran', $request->status);
+        }
+
+        if ($request->filled('nama')) {
+            $query->whereHas('siswa', function ($q) use ($request) {
+                $q->where('nama_siswa', 'like', '%' . $request->nama . '%');
+            });
+        }
+
+        $absensi = $query->get();
+
+        return view('admin.pages.attendances', compact('absensi'));
+    }
 }

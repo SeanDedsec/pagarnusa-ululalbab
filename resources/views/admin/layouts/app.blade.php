@@ -97,10 +97,13 @@
                     @endif
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-wallet"></i> Kelola Keuangan</a>
+                        <a class="nav-link {{ request()->is('admin/keuangan') ? 'active' : '' }}" href="/admin/keuangan"><i class="fas fa-wallet"></i> Kelola Keuangan</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('admin/siswa') ? 'active' : '' }}" href="/admin/siswa"><i class="fas fa-user-graduate"></i> Data Siswa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('admin/absensi') ? 'active' : '' }}" href="/admin/absensi"><i class="fas fa-clipboard-list"></i> Riwayat Absensi</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="fas fa-user-tie"></i> Data Pelatih</a>
@@ -176,6 +179,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    @@stack('scripts')
+    @stack('scripts')
 </body>
 </html>

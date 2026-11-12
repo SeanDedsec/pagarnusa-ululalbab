@@ -1,6 +1,12 @@
 @extends('admin.layouts.app')
 
 @section('content')
+    @if($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show">
+            <strong>Gagal menyimpan!</strong> {{ $errors->first() }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold" style="color: var(--hijau-tua);">Data Siswa</h2>
         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTambah">
@@ -212,43 +218,56 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Fungsi pembantu untuk mencegah error jika modal tidak ditemukan
+        function setupModal(modalId, callback) {
+            var modal = document.getElementById(modalId);
+            if (modal) {
+                modal.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget; // Tombol yang diklik
+                    if (button) {
+                        callback(button);
+                    }
+                });
+            }
+        }
 
-        var modalEdit = document.getElementById('modalEdit');
-        modalEdit.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget;
+        // 1. Setup Modal Edit
+        setupModal('modalEdit', function(button) {
             var id = button.getAttribute('data-id');
-            var nama = button.getAttribute('data-nama');
-            var alamat = button.getAttribute('data-alamat');
-            var hp = button.getAttribute('data-hp');
-            var tgl = button.getAttribute('data-tgl');
-            var status = button.getAttribute('data-status');
-
             document.getElementById('formEdit').action = '/admin/siswa/' + id;
-            document.getElementById('edit_nama').value = nama;
-            document.getElementById('edit_alamat').value = alamat;
-            document.getElementById('edit_hp').value = hp;
-            document.getElementById('edit_tgl').value = tgl;
-            document.getElementById('edit_status').value = status;
+            document.getElementById('edit_nama').value = button.getAttribute('data-nama');
+            document.getElementById('edit_alamat').value = button.getAttribute('data-alamat');
+            document.getElementById('edit_hp').value = button.getAttribute('data-hp');
+            document.getElementById('edit_tgl').value = button.getAttribute('data-tgl');
+            document.getElementById('edit_status').value = button.getAttribute('data-status');
         });
 
-        var modalHapus = document.getElementById('modalHapus');
-        modalHapus.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget;
+        // 2. Setup Modal Hapus
+        setupModal('modalHapus', function(button) {
             var id = button.getAttribute('data-id');
             var nama = button.getAttribute('data-nama');
-
             document.getElementById('formHapus').action = '/admin/siswa/' + id;
             document.getElementById('hapus_nama').textContent = nama;
         });
 
-        var modalAbsensi = document.getElementById('modalAbsensi');
-        modalAbsensi.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget;
+        // 3. Setup Modal Absensi (INI YANG KITA PERBAIKI)
+        setupModal('modalAbsensi', function(button) {
             var id = button.getAttribute('data-id');
             var nama = button.getAttribute('data-nama');
 
-            document.getElementById('absen_siswa_id').value = id;
-            document.getElementById('absen_nama_siswa').textContent = nama;
+            // Pastikan elemen ada sebelum mengisi nilai
+            var inputId = document.getElementById('absen_siswa_id');
+            var textNama = document.getElementById('absen_nama_siswa');
+            
+            if (inputId) {
+                inputId.value = id;
+            } else {
+                console.error("Elemen input absen_siswa_id tidak ditemukan di HTML!");
+            }
+
+            if (textNama) {
+                textNama.textContent = nama;
+            }
         });
     });
 </script>

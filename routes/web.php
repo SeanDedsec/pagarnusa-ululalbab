@@ -2,9 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Site\RegistrationController;
-use App\Http\Controllers\auth\LoginController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\StudentController;
-use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\Admin\AttendanceController;
+use App\Http\Controllers\Admin\TransactionController;
 
 /*halaman public*/
 Route::get('/', function () {
@@ -36,5 +37,10 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::put('/siswa/{id}', [StudentController::class, 'update']);
     Route::delete('/siswa/{id}', [StudentController::class, 'destroy']);
 
+    Route::get('/absensi', [AttendanceController::class, 'index']);
     Route::post('/absensi', [AttendanceController::class, 'store'])->name('absensi.store');
+
+    Route::get('/keuangan', [TransactionController::class, 'index']);
+    Route::post('/keuangan', [TransactionController::class, 'store']);
+    Route::delete('/keuangan/{id}', [TransactionController::class, 'destroy']);
 });
