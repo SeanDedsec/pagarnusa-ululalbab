@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\AttendanceController;
 use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\DashboardController;
 
 /*halaman public*/
 Route::get('/', function () {
@@ -43,4 +44,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/keuangan', [TransactionController::class, 'index']);
     Route::post('/keuangan', [TransactionController::class, 'store']);
     Route::delete('/keuangan/{id}', [TransactionController::class, 'destroy']);
+
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+
 });

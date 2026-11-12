@@ -18,4 +18,9 @@ class Siswa extends Model
         'tanggal_lahir',
         'status',
     ];
+
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class, 'siswa_id');
+    }
 }
