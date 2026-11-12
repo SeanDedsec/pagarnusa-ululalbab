@@ -106,7 +106,7 @@
                         <a class="nav-link {{ request()->is('admin/absensi') ? 'active' : '' }}" href="/admin/absensi"><i class="fas fa-clipboard-list"></i> Riwayat Absensi</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-user-tie"></i> Data Pelatih</a>
+                        <a class="nav-link {{ request()->is('admin/pelatih') ? 'active' : '' }}" href="/admin/pelatih"><i class="fas fa-user-tie"></i> Data Pelatih</a>
                     </li>
                     @if(Auth::user()->peran == 'super_admin')
                     <li class="nav-item">
