@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\CoachController;
 use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Admin\ActivityLogController;
 
 /*halaman public*/
 Route::get('/', [HomeController::class, 'index']);
@@ -63,4 +64,6 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::post('/galeri', [GalleryController::class, 'store']);
     Route::put('/galeri/{id}', [GalleryController::class, 'update']);
     Route::delete('/galeri/{id}', [GalleryController::class, 'destroy']);
+
+    Route::get('/log-aktivitas', [ActivityLogController::class, 'index']);
 });

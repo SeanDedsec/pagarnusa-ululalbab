@@ -5,17 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
+use App\Models\LogAktivitas;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
-    // 1. Menampilkan halaman dan data siswa
     public function index()
     {
         $siswa = Siswa::orderBy('created_at', 'desc')->get();
         return view('admin.pages.students', compact('siswa'));
     }
 
-    // 2. Menyimpan data siswa baru (dari Admin)
     public function store(Request $request)
     {
         $request->validate([
@@ -30,13 +30,19 @@ class StudentController extends Controller
             'alamat' => $request->alamat,
             'no_hp' => $request->no_hp,
             'tanggal_lahir' => $request->tanggal_lahir,
-            'status' => 'aktif', // Admin menambah data = langsung aktif
+            'status' => 'aktif',
+        ]);
+
+        LogAktivitas::create([
+            'pengguna_id' => Auth::id(),
+            'aksi' => 'Tambah',
+            'modul' => 'Data Siswa',
+            'keterangan' => 'Menambahkan siswa: ' . $request->nama_siswa,
         ]);
 
         return redirect()->back()->with('sukses', 'Data siswa berhasil ditambahkan!');
     }
 
-    // 3. Mengupdate data siswa
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -50,13 +56,27 @@ class StudentController extends Controller
         $siswa = Siswa::findOrFail($id);
         $siswa->update($request->all());
 
+        LogAktivitas::create([
+            'pengguna_id' => Auth::id(),
+            'aksi' => 'Edit',
+            'modul' => 'Data Siswa',
+            'keterangan' => 'Mengubah data siswa: ' . $siswa->nama_siswa,
+        ]);
+
         return redirect()->back()->with('sukses', 'Data siswa berhasil diperbarui!');
     }
 
-    // 4. Menghapus data siswa
     public function destroy($id)
     {
         $siswa = Siswa::findOrFail($id);
+
+        LogAktivitas::create([
+            'pengguna_id' => Auth::id(),
+            'aksi' => 'Hapus',
+            'modul' => 'Data Siswa',
+            'keterangan' => 'Menghapus siswa: ' . $siswa->nama_siswa,
+        ]);
+
         $siswa->delete();
 
         return redirect()->back()->with('sukses', 'Data siswa berhasil dihapus!');

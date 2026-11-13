@@ -92,7 +92,7 @@
                         <a class="nav-link" href="#"><i class="fas fa-users-cog"></i> Pengaturan Akun</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-history"></i> Log Aktivitas</a>
+                        <a class="nav-link {{ request()->is('admin/log-aktivitas') ? 'active' : '' }}" href="/admin/log-aktivitas"><i class="fas fa-history"></i> Log Aktivitas</a>
                     </li>
                     @endif
 
