@@ -8,11 +8,10 @@ use App\Http\Controllers\Admin\AttendanceController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CoachController;
+use App\Http\Controllers\Site\HomeController;
 
 /*halaman public*/
-Route::get('/', function () {
-    return view('site.home');
-});
+Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/pendaftaran', function () {
     return view('site.registration');

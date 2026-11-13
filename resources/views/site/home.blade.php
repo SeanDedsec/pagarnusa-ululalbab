@@ -173,28 +173,101 @@
     <section id="pelatih" class="bg-light-custom">
         <div class="container">
             <h2 class="section-title">Data Pelatih</h2>
-            <p class="text-center text-muted">(Nanti data ini akan diambil dari database melalui API Laravel)</p>
+            <div class="row mt-5 justify-content-center">
+                @forelse($pelatih as $p)
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm text-center h-100">
+                        <div class="card-body">
+                            <i class="fas fa-user-circle fa-4x mb-3" style="color: var(--hijau-tua);"></i>
+                            <h5 class="fw-bold">{{ $p->nama_pelatih }}</h5>
+                            <p class="text-muted mb-1"><i class="fas fa-phone"></i> {{ $p->no_hp }}</p>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt"></i> {{ $p->alamat }}</p>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="col-12 text-center text-muted">Belum ada data pelatih.</div>
+                @endforelse
+            </div>
         </div>
     </section>
 
     <section id="jadwal">
         <div class="container">
             <h2 class="section-title">Jadwal Latihan</h2>
-            <p class="text-center text-muted">(Nanti data ini akan diambil dari database melalui API Laravel)</p>
+            <div class="row mt-5 justify-content-center">
+                @forelse($jadwal as $j)
+                <div class="col-md-3 mb-4">
+                    <div class="card border-0 shadow-sm text-center h-100" style="border-bottom: 4px solid var(--emas) !important;">
+                        <div class="card-body">
+                            <h4 class="fw-bold text-success">{{ $j->hari }}</h4>
+                            <p class="mb-1">{{ \Carbon\Carbon::parse($j->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($j->jam_selesai)->format('H:i') }} WIB</p>
+                            <span class="badge bg-secondary">{{ $j->keterangan }}</span>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="col-12 text-center text-muted">Belum ada jadwal latihan.</div>
+                @endforelse
+            </div>
         </div>
     </section>
 
+
     <section id="kegiatan" class="bg-light-custom">
         <div class="container">
-            <h2 class="section-title">Kegiatan & Event</h2>
-            <p class="text-center text-muted">(Nanti data ini akan diambil dari database melalui API Laravel)</p>
+            <h2 class="section-title">Kegiatan & Event Terbaru</h2>
+            <div class="row mt-5">
+                @forelse($kegiatan as $k)
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <small class="text-muted">{{ \Carbon\Carbon::parse($k->tanggal)->format('d M Y') }}</small>
+                            <h5 class="fw-bold mt-2">{{ $k->judul }}</h5>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt"></i> {{ $k->lokasi }}</p>
+                            <p>{{ Str::limit($k->deskripsi, 100) }}</p>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="col-12 text-center text-muted">Belum ada kegiatan yang dipublikasikan.</div>
+                @endforelse
+            </div>
         </div>
     </section>
 
     <section id="transparansi">
         <div class="container">
             <h2 class="section-title">Transparansi Keuangan</h2>
-            <p class="text-center text-muted">(Nanti data ini akan diambil dari database melalui API Laravel)</p>
+            <div class="row mt-5 justify-content-center">
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 shadow-sm text-center bg-success text-white">
+                        <div class="card-body">
+                            <h5>Total Pemasukan</h5>
+                            <h3 class="fw-bold">Rp {{ number_format($totalMasuk, 0, ',', '.') }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 shadow-sm text-center bg-danger text-white">
+                        <div class="card-body">
+                            <h5>Total Pengeluaran</h5>
+                            <h3 class="fw-bold">Rp {{ number_format($totalKeluar, 0, ',', '.') }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 shadow-sm text-center bg-primary text-white">
+                        <div class="card-body">
+                            <h5>Saldo Kas</h5>
+                            <h3 class="fw-bold">Rp {{ number_format($saldo, 0, ',', '.') }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <small class="text-muted">*Data diperbarui secara otomatis dari sistem administrasi.</small>
+            </div>
         </div>
     </section>
 
