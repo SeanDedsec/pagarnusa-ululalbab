@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CoachController;
 use App\Http\Controllers\Site\HomeController;
+use App\Http\Controllers\Admin\ActivityController;
 
 /*halaman public*/
 Route::get('/', [HomeController::class, 'index']);
@@ -51,5 +52,10 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::post('/pelatih', [CoachController::class, 'store']);
     Route::put('/pelatih/{id}', [CoachController::class, 'update']);
     Route::delete('/pelatih/{id}', [CoachController::class, 'destroy']);
+
+    Route::get('/kegiatan', [ActivityController::class, 'index']);
+    Route::post('/kegiatan', [ActivityController::class, 'store']);
+    Route::put('/kegiatan/{id}', [ActivityController::class, 'update']);
+    Route::delete('/kegiatan/{id}', [ActivityController::class, 'destroy']);
 
 });

@@ -110,7 +110,7 @@
                     </li>
                     @if(Auth::user()->peran == 'super_admin')
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-images"></i> Galeri & Kegiatan</a>
+                        <a class="nav-link {{ request()->is('admin/kegiatan') ? 'active' : '' }}" href="/admin/kegiatan"><i class="fas fa-images"></i> Galeri & Kegiatan</a>
                     </li>
                     @endif
                     
