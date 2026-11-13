@@ -78,6 +78,7 @@
     <div class="container-fluid">
         <div class="row">
 
+            <!-- SIDEBAR DESKTOP -->
             <div class="col-md-2 d-none d-md-block sidebar p-0">
                 <h4 class="mt-3">PAGAR NUSA</h4>
                 <ul class="nav flex-column mt-4">
@@ -87,15 +88,6 @@
                         </a>
                     </li>
                     
-                    @if(Auth::user()->peran == 'super_admin')
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-users-cog"></i> Pengaturan Akun</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/log-aktivitas') ? 'active' : '' }}" href="/admin/log-aktivitas"><i class="fas fa-history"></i> Log Aktivitas</a>
-                    </li>
-                    @endif
-
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('admin/keuangan') ? 'active' : '' }}" href="/admin/keuangan"><i class="fas fa-wallet"></i> Kelola Keuangan</a>
                     </li>
@@ -108,14 +100,22 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('admin/pelatih') ? 'active' : '' }}" href="/admin/pelatih"><i class="fas fa-user-tie"></i> Data Pelatih</a>
                     </li>
+
+                    <!-- MENU KHUSUS SUPER ADMIN -->
                     @if(Auth::user()->peran == 'super_admin')
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/kegiatan') ? 'active' : '' }}" href="/admin/kegiatan"><i class="fas fa-images"></i> Kegiatan</a>
+                        <a class="nav-link {{ request()->is('admin/kegiatan') ? 'active' : '' }}" href="/admin/kegiatan"><i class="fas fa-calendar-alt"></i> Kelola Kegiatan</a>
                     </li>
-                    @endif
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('admin/galeri') ? 'active' : '' }}" href="/admin/galeri"><i class="fas fa-images"></i> Kelola Galeri</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('admin/log-aktivitas') ? 'active' : '' }}" href="/admin/log-aktivitas"><i class="fas fa-history"></i> Log Aktivitas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('admin/pengaturan') ? 'active' : '' }}" href="/admin/pengaturan"><i class="fas fa-cogs"></i> Pengaturan</a>
+                    </li>
+                    @endif
                     
                     <li class="nav-item mt-5">
                         <form action="/admin/logout" method="POST">
@@ -128,8 +128,8 @@
                 </ul>
             </div>
 
+            <!-- KONTEN UTAMA -->
             <div class="col-md-10 p-0">
-
                 <nav class="top-navbar d-flex justify-content-between align-items-center">
                     <button class="btn btn-outline-dark d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMobile">
                         <i class="fas fa-bars"></i>
@@ -158,6 +158,7 @@
         </div>
     </div>
 
+    <!-- SIDEBAR MOBILE (OFFCANVAS) -->
     <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="sidebarMobile" style="background-color: var(--hijau-tua) !important;">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title text-warning">PAGAR NUSA</h5>
@@ -166,15 +167,16 @@
         <div class="offcanvas-body p-0">
             <ul class="nav flex-column">
                 <li class="nav-item"><a class="nav-link text-white" href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="/admin/keuangan"><i class="fas fa-wallet"></i> Kelola Keuangan</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="/admin/siswa"><i class="fas fa-user-graduate"></i> Data Siswa</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="/admin/absensi"><i class="fas fa-clipboard-list"></i> Riwayat Absensi</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="/admin/pelatih"><i class="fas fa-user-tie"></i> Data Pelatih</a></li>
+                
                 @if(Auth::user()->peran == 'super_admin')
-                <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-users-cog"></i> Pengaturan Akun</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-history"></i> Log Aktivitas</a></li>
-                @endif
-                <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-wallet"></i> Kelola Keuangan</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-user-graduate"></i> Data Siswa</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-user-tie"></i> Data Pelatih</a></li>
-                @if(Auth::user()->peran == 'super_admin')
-                <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-images"></i> Galeri & Kegiatan</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="/admin/kegiatan"><i class="fas fa-calendar-alt"></i> Kelola Kegiatan</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="/admin/galeri"><i class="fas fa-images"></i> Kelola Galeri</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="/admin/log-aktivitas"><i class="fas fa-history"></i> Log Aktivitas</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="/admin/pengaturan"><i class="fas fa-cogs"></i> Pengaturan</a></li>
                 @endif
             </ul>
         </div>

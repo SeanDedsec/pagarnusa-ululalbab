@@ -12,6 +12,7 @@ use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\ActivityLogController;
+use App\Http\Controllers\Admin\SettingController;
 
 /*halaman public*/
 Route::get('/', [HomeController::class, 'index']);
@@ -66,4 +67,10 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::delete('/galeri/{id}', [GalleryController::class, 'destroy']);
 
     Route::get('/log-aktivitas', [ActivityLogController::class, 'index']);
+
+    Route::get('/pengaturan', [SettingController::class, 'index']);
+    Route::post('/pengaturan/user', [SettingController::class, 'storeUser']);
+    Route::put('/pengaturan/user/{id}', [SettingController::class, 'updateUser']);
+    Route::delete('/pengaturan/user/{id}', [SettingController::class, 'destroyUser']);
+    Route::post('/pengaturan/identitas', [SettingController::class, 'updateIdentitas']);
 });
