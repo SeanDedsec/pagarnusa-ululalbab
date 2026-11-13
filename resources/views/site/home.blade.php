@@ -221,6 +221,13 @@
                 @forelse($kegiatan as $k)
                 <div class="col-md-4 mb-4">
                     <div class="card border-0 shadow-sm h-100">
+                        
+                        @if($k->galeri->isNotEmpty())
+                            <img src="{{ asset('storage/' . $k->galeri->first()->file_foto) }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="{{ $k->judul }}">
+                        @else
+                            <img src="https://via.placeholder.com/400x200?text=No+Image" class="card-img-top" style="height: 200px; object-fit: cover;" alt="No Image">
+                        @endif
+
                         <div class="card-body">
                             <small class="text-muted">{{ \Carbon\Carbon::parse($k->tanggal)->format('d M Y') }}</small>
                             <h5 class="fw-bold mt-2">{{ $k->judul }}</h5>

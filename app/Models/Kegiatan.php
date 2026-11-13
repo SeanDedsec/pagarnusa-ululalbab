@@ -11,4 +11,9 @@ class Kegiatan extends Model
     use HasFactory;
     protected $table = 'kegiatan';
     protected $fillable = ['judul', 'deskripsi', 'tanggal', 'lokasi', 'status_publikasi'];
+    
+    public function galeri()
+    {
+        return $this->hasMany(Galeri::class, 'kegiatan_id');
+    }
 }

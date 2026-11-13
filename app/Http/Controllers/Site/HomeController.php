@@ -13,14 +13,11 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Ambil data dari database
         $pelatih = Pelatih::all();
         $jadwal = JadwalLatihan::all();
         
-        // Hanya tampilkan kegiatan yang sudah dipublikasi
-        $kegiatan = Kegiatan::where('status_publikasi', 'publikasi')->orderBy('tanggal', 'desc')->take(3)->get();
+        $kegiatan = Kegiatan::with('galeri')->where('status_publikasi', 'publikasi')->orderBy('tanggal', 'desc')->take(3)->get();
 
-        // Hitung total transparansi keuangan
         $totalMasuk = Keuangan::where('jenis_transaksi', 'masuk')->sum('nominal');
         $totalKeluar = Keuangan::where('jenis_transaksi', 'keluar')->sum('nominal');
         $saldo = $totalMasuk - $totalKeluar;

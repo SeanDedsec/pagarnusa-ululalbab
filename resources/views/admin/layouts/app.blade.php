@@ -110,9 +110,12 @@
                     </li>
                     @if(Auth::user()->peran == 'super_admin')
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/kegiatan') ? 'active' : '' }}" href="/admin/kegiatan"><i class="fas fa-images"></i> Galeri & Kegiatan</a>
+                        <a class="nav-link {{ request()->is('admin/kegiatan') ? 'active' : '' }}" href="/admin/kegiatan"><i class="fas fa-images"></i> Kegiatan</a>
                     </li>
                     @endif
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('admin/galeri') ? 'active' : '' }}" href="/admin/galeri"><i class="fas fa-images"></i> Kelola Galeri</a>
+                    </li>
                     
                     <li class="nav-item mt-5">
                         <form action="/admin/logout" method="POST">

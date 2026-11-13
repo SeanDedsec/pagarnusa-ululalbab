@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CoachController;
 use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Admin\ActivityController;
+use App\Http\Controllers\Admin\GalleryController;
 
 /*halaman public*/
 Route::get('/', [HomeController::class, 'index']);
@@ -58,4 +59,8 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::put('/kegiatan/{id}', [ActivityController::class, 'update']);
     Route::delete('/kegiatan/{id}', [ActivityController::class, 'destroy']);
 
+    Route::get('/galeri', [GalleryController::class, 'index']);
+    Route::post('/galeri', [GalleryController::class, 'store']);
+    Route::put('/galeri/{id}', [GalleryController::class, 'update']);
+    Route::delete('/galeri/{id}', [GalleryController::class, 'destroy']);
 });
