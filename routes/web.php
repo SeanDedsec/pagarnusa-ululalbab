@@ -18,7 +18,10 @@ use App\Http\Controllers\Admin\SettingController;
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/pendaftaran', function () {
-    return view('site.registration');
+    $identitas = [
+        'nama_organisasi' => \App\Models\Pengaturan::where('kunci', 'nama_organisasi')->first()->nilai ?? 'Pagar Nusa Ranting Mancar Ulul-Albab',
+    ];
+    return view('site.registration', compact('identitas'));
 });
 
 Route::post('/pendaftaran', [RegistrationController::class, 'store'])->name('pendaftaran.store');

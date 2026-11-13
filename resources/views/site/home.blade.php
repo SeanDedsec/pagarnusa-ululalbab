@@ -109,8 +109,7 @@
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="https://via.placeholder.com/40" alt="Logo"> 
-                PAGAR NUSA <br><small style="font-size: 10px; font-weight: 300;">Ranting Mancar Ulul-Albab</small>
+                <img src="https://via.placeholder.com/40" alt="Logo">PAGAR NUSA <br><small style="font-size: 10px; font-weight: 300;">{{ $identitas['nama_organisasi'] }}</small>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
@@ -122,6 +121,7 @@
                     <li class="nav-item"><a class="nav-link" href="#pelatih">Pelatih</a></li>
                     <li class="nav-item"><a class="nav-link" href="#jadwal">Jadwal</a></li>
                     <li class="nav-item"><a class="nav-link" href="#kegiatan">Kegiatan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#galeri">Galeri</a></li>
                     <li class="nav-item"><a class="nav-link" href="#transparansi">Transparansi</a></li>
                     <li class="nav-item ms-3">
                         <a class="btn btn-emas btn-sm" href="/pendaftaran">Pendaftaran</a>
@@ -135,7 +135,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-                    <p class="text-uppercase" style="letter-spacing: 2px; color: var(--emas);">Pagar Nusa Ranting Mancar Ulul-Albab</p>
+                    <p class="text-uppercase" style="letter-spacing: 2px; color: var(--emas);">{{ $identitas['nama_organisasi'] }}</p>
                     <h1>Administrasi Tertata,<br><span>Organisasi Lebih Terbuka</span></h1>
                     <p class="lead mt-4">Bersama Pagar Nusa, kita wujudkan generasi yang berakhlak mulia, berilmu, dan berprestasi melalui pencak silat.</p>
                     <div class="mt-4">
@@ -243,6 +243,27 @@
         </div>
     </section>
 
+    <section id="galeri">
+        <div class="container">
+            <h2 class="section-title">Galeri Foto</h2>
+            <div class="row mt-5">
+                @forelse($galeri as $g)
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <img src="{{ asset('storage/' . $g->file_foto) }}" class="card-img-top" style="height: 250px; object-fit: cover;" alt="{{ $g->judul }}">
+                        <div class="card-body text-center">
+                            <h6 class="fw-bold">{{ $g->judul }}</h6>
+                            <small class="text-muted">{{ \Carbon\Carbon::parse($g->tanggal)->format('d M Y') }}</small>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="col-12 text-center text-muted">Belum ada foto galeri yang dipublikasikan.</div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
     <section id="transparansi">
         <div class="container">
             <h2 class="section-title">Transparansi Keuangan</h2>
@@ -278,9 +299,13 @@
         </div>
     </section>
 
-    <footer class="py-4 text-center text-white" style="background-color: var(--hijau-tua);">
+    <footer class="py-5 text-center text-white" style="background-color: var(--hijau-tua);">
         <div class="container">
-            <p class="mb-0">&copy; 2026 Pagar Nusa Ranting Mancar Ulul-Albab. All rights reserved.</p>
+            <h5 class="fw-bold">{{ $identitas['nama_organisasi'] }}</h5>
+            <p class="mb-1"><i class="fas fa-map-marker-alt"></i> {{ $identitas['alamat'] }}</p>
+            <p class="mb-3"><i class="fas fa-phone"></i> {{ $identitas['no_hp'] }}</p>
+            <hr class="bg-light" style="width: 50%; margin: 20px auto;">
+            <p class="mb-0 text-white-50">&copy; {{ date('Y') }} {{ $identitas['nama_organisasi'] }}. All rights reserved.</p>
         </div>
     </footer>
 
