@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Keuangan;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TransactionController extends Controller
 {
@@ -46,5 +47,22 @@ class TransactionController extends Controller
         $keuangan->delete();
 
         return redirect()->back()->with('sukses', 'Transaksi berhasil dihapus!');
+    }
+
+     public function cetakPdf(Request $request)
+    {
+        $keuangan = Keuangan::orderBy('tanggal', 'desc')->get();
+        $totalMasuk = Keuangan::where('jenis_transaksi', 'masuk')->sum('nominal');
+        $totalKeluar = Keuangan::where('jenis_transaksi', 'keluar')->sum('nominal');
+        $saldo = $totalMasuk - $totalKeluar;
+
+        $tanggal_mulai = $request->input('tanggal_mulai', date('Y-m-01'));
+        $tanggal_akhir = $request->input('tanggal_akhir', date('Y-m-d'));
+
+        $pdf = Pdf::loadView('pdf.report', compact('keuangan', 'totalMasuk', 'totalKeluar', 'saldo', 'tanggal_mulai', 'tanggal_akhir'));
+        
+        $pdf->setPaper('A4', 'landscape');
+
+        return $pdf->download('Laporan_Keuangan_PagarNusa.pdf');
     }
 }

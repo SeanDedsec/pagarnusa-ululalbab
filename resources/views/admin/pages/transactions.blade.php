@@ -3,9 +3,15 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold" style="color: var(--hijau-tua);">Kelola Keuangan</h2>
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTambahKeuangan">
-            <i class="fas fa-plus"></i> Catat Transaksi
-        </button>
+        <div>
+            <a href="/admin/keuangan/cetak-pdf" class="btn btn-danger me-2" target="_blank">
+                <i class="fas fa-file-pdf"></i> Cetak PDF
+            </a>
+            
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTambahKeuangan">
+                <i class="fas fa-plus"></i> Catat Transaksi
+            </button>
+        </div>
     </div>
 
     @if(session('sukses'))
