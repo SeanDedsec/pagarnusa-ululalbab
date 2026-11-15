@@ -25,6 +25,8 @@ Route::get('/pendaftaran', function () {
 });
 
 Route::post('/pendaftaran', [RegistrationController::class, 'store'])->name('pendaftaran.store');
+Route::post('/pendaftaran', [RegistrationController::class, 'store'])->name('pendaftaran.store');
+Route::get('/pendaftaran/bukti/{id}', [RegistrationController::class, 'cetakBukti']);
 
 /*halaman admin*/
 Route::get('/admin/login', [LoginController::class, 'showLoginForm'])->name('login');

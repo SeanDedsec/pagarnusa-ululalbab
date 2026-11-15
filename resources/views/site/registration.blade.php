@@ -7,7 +7,8 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
             --hijau-tua: #0b3d2e;
@@ -77,10 +78,41 @@
         </div>
         
         <div class="card-body p-4 p-md-5">
-            @if(@session('sukses'))
-                <div class="alert alert-success">
-                    {{ session('sukses')}}
+            @if(session('sukses'))
+            <div class="modal fade" id="modalSuksesPendaftaran" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content text-center">
+                        <div class="modal-header bg-success text-white justify-content-center">
+                            <h5 class="modal-title fw-bold">Pendaftaran Berhasil!</h5>
+                        </div>
+                        <div class="modal-body p-4">
+                            <i class="fas fa-check-circle text-success mb-3" style="font-size: 4rem;"></i>
+                            <p>Data Anda telah kami terima dan sedang menunggu konfirmasi Admin.</p>
+                            <p class="fw-bold">Silakan unduh bukti pendaftaran dan hubungi Pelatih Penanggung Jawab untuk informasi lebih lanjut.</p>
+                            
+                            <div class="d-grid gap-2 mt-4">
+                                <a href="/pendaftaran/bukti/{{ session('siswa_id') }}" class="btn btn-danger btn-lg">
+                                    <i class="fas fa-file-pdf me-2"></i> Download Bukti Pendaftaran
+                                </a>
+                                
+                                <a href="https://wa.me/62{{ ltrim(session('no_hp_pelatih'), '0') }}?text=Halo%20Pelatih,%20saya%20ingin%20konfirmasi%20pendaftaran%20siswa%20baru%20dengan%20ID%20%23PN-{{ str_pad(session('siswa_id'), 4, '0', STR_PAD_LEFT) }}%20atas%20nama%20..." target="_blank" class="btn btn-success btn-lg">
+                                    <i class="fab fa-whatsapp me-2"></i> Hubungi Pelatih (WA)
+                                </a>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <a href="/" class="btn btn-outline-secondary">Kembali ke Beranda</a>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var myModal = new bootstrap.Modal(document.getElementById('modalSuksesPendaftaran'));
+                    myModal.show();
+                });
+            </script>
             @endif
                 
             <form action="/pendaftaran" method="POST">
