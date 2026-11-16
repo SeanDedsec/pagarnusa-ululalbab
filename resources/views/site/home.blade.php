@@ -121,7 +121,7 @@
                     <li class="nav-item"><a class="nav-link" href="#pelatih">Pelatih</a></li>
                     <li class="nav-item"><a class="nav-link" href="#jadwal">Jadwal</a></li>
                     <li class="nav-item"><a class="nav-link" href="#kegiatan">Kegiatan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#galeri">Galeri</a></li>
+                    <!-- MENU GALERI DIHAPUS DARI SINI -->
                     <li class="nav-item"><a class="nav-link" href="#transparansi">Transparansi</a></li>
                     <li class="nav-item ms-3">
                         <a class="btn btn-emas btn-sm" href="/pendaftaran">Pendaftaran</a>
@@ -238,27 +238,6 @@
                 </div>
                 @empty
                 <div class="col-12 text-center text-muted">Belum ada kegiatan yang dipublikasikan.</div>
-                @endforelse
-            </div>
-        </div>
-    </section>
-
-    <section id="galeri">
-        <div class="container">
-            <h2 class="section-title">Galeri Foto</h2>
-            <div class="row mt-5">
-                @forelse($galeri as $g)
-                <div class="col-md-4 mb-4">
-                    <div class="card border-0 shadow-sm">
-                        <img src="{{ asset('storage/' . $g->file_foto) }}" class="card-img-top" style="height: 250px; object-fit: cover;" alt="{{ $g->judul }}">
-                        <div class="card-body text-center">
-                            <h6 class="fw-bold">{{ $g->judul }}</h6>
-                            <small class="text-muted">{{ \Carbon\Carbon::parse($g->tanggal)->format('d M Y') }}</small>
-                        </div>
-                    </div>
-                </div>
-                @empty
-                <div class="col-12 text-center text-muted">Belum ada foto galeri yang dipublikasikan.</div>
                 @endforelse
             </div>
         </div>
