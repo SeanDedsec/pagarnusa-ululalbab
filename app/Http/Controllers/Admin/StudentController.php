@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\LogAktivitas;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class StudentController extends Controller
 {
@@ -80,5 +81,14 @@ class StudentController extends Controller
         $siswa->delete();
 
         return redirect()->back()->with('sukses', 'Data siswa berhasil dihapus!');
+    }
+
+    public function cetakPdf()
+    {
+        $siswa = Siswa::orderBy('nama_siswa', 'asc')->get();
+        $pdf = Pdf::loadView('pdf.laporan_siswa', compact('siswa'));
+        $pdf->setPaper('A4', 'portrait');
+
+        return $pdf->download('Laporan_Data_Siswa_PagarNusa.pdf');
     }
 }

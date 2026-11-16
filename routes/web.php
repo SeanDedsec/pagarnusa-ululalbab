@@ -46,6 +46,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::post('/siswa', [StudentController::class, 'store']);
     Route::put('/siswa/{id}', [StudentController::class, 'update']);
     Route::delete('/siswa/{id}', [StudentController::class, 'destroy']);
+    Route::get('/siswa/cetak-pdf', [StudentController::class, 'cetakPdf'])->name('siswa.pdf');
 
     Route::get('/absensi', [AttendanceController::class, 'index']);
     Route::post('/absensi', [AttendanceController::class, 'store'])->name('absensi.store');
