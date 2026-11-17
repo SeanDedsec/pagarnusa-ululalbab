@@ -55,6 +55,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::post('/keuangan', [TransactionController::class, 'store']);
     Route::delete('/keuangan/{id}', [TransactionController::class, 'destroy']);
     Route::get('/keuangan/cetak-pdf', [TransactionController::class, 'cetakPdf'])->name('keuangan.pdf');
+    Route::put('/keuangan/{id}', [TransactionController::class, 'update']);
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
 

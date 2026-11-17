@@ -11,7 +11,7 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $keuangan = Keuangan::orderBy('tanggal', 'desc')->get();
+        $keuangan = Keuangan::orderBy('tanggal', 'desc')->orderBy('waktu', 'desc')->get();
 
         $totalMasuk = Keuangan::where('jenis_transaksi', 'masuk')->sum('nominal');
         $totalKeluar = Keuangan::where('jenis_transaksi', 'keluar')->sum('nominal');
@@ -24,6 +24,7 @@ class TransactionController extends Controller
     {
         $request->validate([
             'tanggal' => 'required|date',
+            'waktu' => 'required|date_format:H:i:s',
             'jenis_transaksi' => 'required|in:masuk,keluar',
             'kategori' => 'required|string|max:255',
             'nominal' => 'required|numeric|min:1',
@@ -32,6 +33,7 @@ class TransactionController extends Controller
 
         Keuangan::create([
             'tanggal' => $request->tanggal,
+            'waktu' => $request->waktu,
             'jenis_transaksi' => $request->jenis_transaksi,
             'kategori' => $request->kategori,
             'nominal' => $request->nominal,
@@ -39,6 +41,31 @@ class TransactionController extends Controller
         ]);
 
         return redirect()->back()->with('sukses', 'Transaksi berhasil ditambahkan!');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'tanggal' => 'required|date',
+            'waktu' => 'required|date_format:H:i:s',
+            'jenis_transaksi' => 'required|in:masuk,keluar',
+            'kategori' => 'required|string|max:255',
+            'nominal' => 'required|numeric|min:1',
+            'keterangan' => 'nullable|string',
+        ]);
+
+        $keuangan = Keuangan::findOrFail($id);
+        
+        $keuangan->update([
+            'tanggal' => $request->tanggal,
+            'waktu' => $request->waktu,
+            'jenis_transaksi' => $request->jenis_transaksi,
+            'kategori' => $request->kategori,
+            'nominal' => $request->nominal,
+            'keterangan' => $request->keterangan,
+        ]);
+
+        return redirect()->back()->with('sukses', 'Transaksi berhasil diperbarui!');
     }
 
     public function destroy($id)
@@ -49,9 +76,9 @@ class TransactionController extends Controller
         return redirect()->back()->with('sukses', 'Transaksi berhasil dihapus!');
     }
 
-     public function cetakPdf(Request $request)
+    public function cetakPdf(Request $request)
     {
-        $keuangan = Keuangan::orderBy('tanggal', 'desc')->get();
+        $keuangan = Keuangan::orderBy('tanggal', 'desc')->orderBy('waktu', 'desc')->get();
         $totalMasuk = Keuangan::where('jenis_transaksi', 'masuk')->sum('nominal');
         $totalKeluar = Keuangan::where('jenis_transaksi', 'keluar')->sum('nominal');
         $saldo = $totalMasuk - $totalKeluar;

@@ -48,5 +48,12 @@
                 </tbody>
             </table>
         </div>
+        
+        <!-- BAGIAN PAGINATION -->
+        @if($logs->hasPages())
+        <div class="card-footer bg-white border-0 pt-0 pb-3 d-flex justify-content-center">
+            {{ $logs->links('pagination::bootstrap-5') }}
+        </div>
+        @endif
     </div>
 @endsection

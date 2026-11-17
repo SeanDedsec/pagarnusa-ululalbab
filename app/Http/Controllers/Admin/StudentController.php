@@ -11,9 +11,23 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $siswa = Siswa::orderBy('created_at', 'desc')->get();
+        // Mulai query
+        $query = Siswa::orderBy('created_at', 'desc');
+
+        // Filter berdasarkan Nama
+        if ($request->filled('nama')) {
+            $query->where('nama_siswa', 'like', '%' . $request->nama . '%');
+        }
+
+        // Filter berdasarkan Status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $siswa = $query->get();
+
         return view('admin.pages.students', compact('siswa'));
     }
 

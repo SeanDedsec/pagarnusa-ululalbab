@@ -32,12 +32,18 @@ class AttendanceController extends Controller
             ]);
 
             if ($request->nominal_kas > 0) {
+                
+                // AMBIL DATA SISWA UNTUK MENDAPATKAN NAMANYA
+                $siswa = Siswa::find($request->siswa_id);
+                $nama_siswa = $siswa ? $siswa->nama_siswa : 'ID ' . $request->siswa_id;
+
                 Keuangan::create([
                     'tanggal' => $request->tanggal,
+                    'waktu' => date('H:i:s'),
                     'jenis_transaksi' => 'masuk',
                     'kategori' => 'Kas Latihan',
                     'nominal' => $request->nominal_kas,
-                    'keterangan' => 'Kas dari siswa ID: ' . $request->siswa_id . ' (' . $request->status_kehadiran . ')',
+                    'keterangan' => 'Kas dari siswa: ' . $nama_siswa . ' (' . ucfirst($request->status_kehadiran) . ')', // <-- SUDAH MENGGUNAKAN NAMA
                     'absensi_id' => $absensi->id,
                 ]);
             }
@@ -51,7 +57,7 @@ class AttendanceController extends Controller
         }
     }
 
-        public function index(Request $request)
+    public function index(Request $request)
     {
         $query = Absensi::with(['siswa', 'jadwal'])->orderBy('tanggal', 'desc');
 
