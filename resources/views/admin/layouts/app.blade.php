@@ -3,74 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f3d2e">
     <title>Admin - Pagar Nusa Ulul-Albab</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     <style>
         :root {
-            --hijau-tua: #0b3d2e;
-            --hijau-muda: #145a43;
-            --emas: #d4af37;
-            --bg-body: #f4f7f6;
+            --hijau-tua: #0f3d2e;
+            --hijau-muda: #174f3c;
+            --hijau: #1d6b4f;
+            --hijau-pucat: #e8f1ec;
+            --emas: #c9a227;
+            --emas-tua: #a8861a;
+            --tinta: #16241d;
+            --abu: #5d6b64;
+            --garis: #dbe5df;
+            --bg-body: #f4f7f5;
+            --radius: 14px;
+
+            /* Samakan warna bawaan Bootstrap dengan tema Pagar Nusa */
+            --bs-primary: #1d6b4f;
+            --bs-primary-rgb: 29, 107, 79;
+            --bs-link-color: #1d6b4f;
+            --bs-link-hover-color: #0f3d2e;
+            --bs-body-font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            --bs-body-color: #16241d;
         }
+
         body {
             background-color: var(--bg-body);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            color: var(--tinta);
             overflow-x: hidden;
         }
+        a:focus-visible, button:focus-visible { outline: 3px solid var(--emas); outline-offset: 2px; }
+        .row > * { min-width: 0; }
 
-        /* SIDEBAR STYLE */
+        /* ---------- SIDEBAR ---------- */
         .sidebar {
             background-color: var(--hijau-tua);
-            min-height: 100vh;
             color: white;
-            padding-top: 20px;
-            transition: 0.3s;
+            position: sticky; top: 0; align-self: flex-start;
+            height: 100vh; overflow-y: auto;
+            padding: 0 0 24px;
+            border-right: 3px solid var(--emas);
         }
-        .sidebar h4 {
-            text-align: center;
-            font-weight: 700;
-            color: var(--emas);
-            margin-bottom: 30px;
-            font-size: 1.2rem;
-        }
-        .sidebar .nav-link {
-            color: #d1d5db;
-            padding: 12px 20px;
-            font-size: 0.95rem;
+        .brand-admin { display: flex; align-items: center; gap: 12px; padding: 22px 20px 20px; text-decoration: none; }
+        .brand-admin img { width: 40px; height: 40px; border-radius: 50%; background: #fff; padding: 3px; object-fit: contain; flex-shrink: 0; }
+        .brand-admin .nama { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.1rem; color: var(--emas); line-height: 1.1; display: block; }
+        .brand-admin .ranting { font-size: .72rem; color: rgba(255,255,255,.65); }
+
+        .menu-label { font-size: .78rem; font-weight: 600; color: rgba(255,255,255,.5); padding: 18px 20px 6px; }
+
+        .sidebar .nav-link, .offcanvas .nav-link {
+            color: rgba(255,255,255,.82);
+            padding: 11px 20px;
+            font-size: .94rem; font-weight: 500;
             border-left: 4px solid transparent;
+            border-radius: 0;
+            transition: background .15s, color .15s;
         }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+        .sidebar .nav-link:hover, .sidebar .nav-link.active,
+        .offcanvas .nav-link:hover, .offcanvas .nav-link.active {
             background-color: var(--hijau-muda);
-            color: var(--emas);
+            color: var(--emas) !important;
             border-left: 4px solid var(--emas);
         }
-        .sidebar .nav-link i {
-            width: 25px;
-            text-align: center;
-            margin-right: 10px;
-        }
+        .sidebar .nav-link i, .offcanvas .nav-link i { width: 25px; text-align: center; margin-right: 10px; }
+        .logout-btn { color: #ff9b94 !important; }
+        .logout-btn:hover { background-color: rgba(179,50,43,.2) !important; border-left-color: #ff9b94 !important; color: #ffb9b4 !important; }
 
+        /* ---------- BAR ATAS ---------- */
         .top-navbar {
             background-color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            padding: 15px 20px;
+            border-bottom: 1px solid var(--garis);
+            padding: 10px 20px;
+            min-height: 64px;
+            position: sticky; top: 0; z-index: 1020;
         }
+        .top-navbar .judul-bar { font-family: 'Fraunces', serif; font-weight: 700; color: var(--hijau-tua); font-size: 1.05rem; }
+        .btn-menu { border: 1.5px solid var(--garis); color: var(--hijau-tua); border-radius: 12px; width: 44px; height: 44px; padding: 0; background: #fff; }
+        .btn-menu:hover { background: var(--hijau-pucat); color: var(--hijau-tua); border-color: var(--hijau-pucat); }
 
-        .main-content {
-            padding: 30px;
-        }
+        .pengguna { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--tinta); padding: 4px 6px; border-radius: 12px; }
+        .pengguna:hover { background: var(--bg-body); color: var(--tinta); }
+        .pengguna .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--hijau); color: #fff; display: grid; place-items: center; font-weight: 700; flex-shrink: 0; }
+        .pengguna .teks { line-height: 1.2; text-align: left; max-width: 180px; }
+        .pengguna .teks b { display: block; font-size: .92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .pengguna .teks small { color: var(--abu); font-size: .76rem; }
+        .dropdown-menu { border: 1px solid var(--garis); border-radius: 12px; box-shadow: 0 12px 30px -10px rgba(15,61,46,.25); padding: 6px; }
+        .dropdown-item { border-radius: 8px; padding: 9px 12px; font-weight: 500; }
 
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-            .main-content {
-                padding: 15px;
-            }
+        /* ---------- KONTEN ---------- */
+        .main-content { padding: 30px; }
+
+        /* Poles komponen Bootstrap yang dipakai halaman-halaman admin */
+        .main-content .card { border: 1px solid var(--garis); border-radius: var(--radius); box-shadow: none; }
+        .main-content .card-header { background: #fff; border-bottom: 1px solid var(--garis); font-weight: 600; }
+        .main-content h1, .main-content h2, .main-content h3, .main-content h4 { font-family: 'Fraunces', serif; color: var(--hijau-tua); letter-spacing: -0.01em; }
+        .main-content .table > thead th { font-size: .82rem; font-weight: 600; color: var(--abu); background: var(--hijau-pucat); border-bottom: 0; white-space: nowrap; }
+        .main-content .table > :not(caption) > * > * { padding: .8rem .9rem; }
+        .main-content .btn { border-radius: 10px; font-weight: 600; }
+        .main-content .btn-primary { --bs-btn-bg: #1d6b4f; --bs-btn-border-color: #1d6b4f; --bs-btn-hover-bg: #0f3d2e; --bs-btn-hover-border-color: #0f3d2e; --bs-btn-active-bg: #0f3d2e; --bs-btn-active-border-color: #0f3d2e; --bs-btn-disabled-bg: #1d6b4f; --bs-btn-disabled-border-color: #1d6b4f; }
+        .main-content .btn-outline-primary { --bs-btn-color: #1d6b4f; --bs-btn-border-color: #1d6b4f; --bs-btn-hover-bg: #1d6b4f; --bs-btn-hover-border-color: #1d6b4f; --bs-btn-active-bg: #1d6b4f; }
+        .main-content .form-control, .main-content .form-select { border-radius: 10px; border: 1.5px solid var(--garis); padding: .6rem .8rem; }
+        .main-content .form-control:focus, .main-content .form-select:focus { border-color: var(--hijau); box-shadow: 0 0 0 4px rgba(29,107,79,.15); }
+        .main-content .form-label { font-weight: 600; color: var(--hijau-tua); }
+        .main-content .badge { font-weight: 600; }
+        .main-content .alert { border: 0; border-radius: 12px; }
+        .main-content .page-link { color: var(--hijau); }
+        .main-content .active > .page-link { background: var(--hijau); border-color: var(--hijau); color: #fff; }
+
+        /* ---------- OFFCANVAS (HP & tablet) ---------- */
+        .offcanvas { width: 290px; border-right: 3px solid var(--emas); }
+        .offcanvas-header { padding: 18px 20px; }
+        .offcanvas-title { font-family: 'Fraunces', serif; font-weight: 700; color: var(--emas) !important; }
+        .offcanvas .nav-link { padding: 14px 20px; font-size: 1rem; } /* area sentuh lebih besar */
+
+        @media (max-width: 991.98px) {
+            .main-content { padding: 18px 14px 40px; }
+            .top-navbar { padding: 8px 14px; }
         }
+        @media (max-width: 575.98px) {
+            .pengguna .teks { display: none; }
+        }
+        @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
     </style>
 </head>
 <body>
@@ -79,48 +141,56 @@
         <div class="row">
 
             <!-- SIDEBAR DESKTOP -->
-            <div class="col-md-2 d-none d-md-block sidebar p-0">
-                <h4 class="mt-3">PAGAR NUSA</h4>
-                <ul class="nav flex-column mt-4">
+            <div class="col-lg-2 d-none d-lg-block sidebar p-0">
+                <a class="brand-admin" href="/admin/dashboard">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                         onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 40 40%27%3E%3Ccircle cx=%2720%27 cy=%2720%27 r=%2720%27 fill=%27%231d6b4f%27/%3E%3Ctext x=%2720%27 y=%2726%27 font-size=%2718%27 text-anchor=%27middle%27 fill=%27white%27 font-family=%27serif%27 font-weight=%27bold%27%3EPN%3C/text%3E%3C/svg%3E';">
+                    <span>
+                        <span class="nama">PAGAR NUSA</span>
+                        <span class="ranting">Ulul-Albab</span>
+                    </span>
+                </a>
+                <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}" href="/admin/dashboard">
+                        <a class="nav-link {{ request()->is('admin/dashboard*') ? 'active' : '' }}" href="/admin/dashboard">
                             <i class="fas fa-tachometer-alt"></i> Dashboard
                         </a>
                     </li>
-                    
+
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/keuangan') ? 'active' : '' }}" href="/admin/keuangan"><i class="fas fa-wallet"></i> Kelola Keuangan</a>
+                        <a class="nav-link {{ request()->is('admin/keuangan*') ? 'active' : '' }}" href="/admin/keuangan"><i class="fas fa-wallet"></i> Kelola Keuangan</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/siswa') ? 'active' : '' }}" href="/admin/siswa"><i class="fas fa-user-graduate"></i> Data Siswa</a>
+                        <a class="nav-link {{ request()->is('admin/siswa*') ? 'active' : '' }}" href="/admin/siswa"><i class="fas fa-user-graduate"></i> Data Siswa</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/absensi') ? 'active' : '' }}" href="/admin/absensi"><i class="fas fa-clipboard-list"></i> Riwayat Absensi</a>
+                        <a class="nav-link {{ request()->is('admin/absensi*') ? 'active' : '' }}" href="/admin/absensi"><i class="fas fa-clipboard-list"></i> Riwayat Absensi</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/pelatih') ? 'active' : '' }}" href="/admin/pelatih"><i class="fas fa-user-tie"></i> Data Pelatih</a>
+                        <a class="nav-link {{ request()->is('admin/pelatih*') ? 'active' : '' }}" href="/admin/pelatih"><i class="fas fa-user-tie"></i> Data Pelatih</a>
                     </li>
 
                     <!-- MENU KHUSUS SUPER ADMIN -->
                     @if(Auth::user()->peran == 'super_admin')
+                    <li class="menu-label">Khusus super admin</li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/kegiatan') ? 'active' : '' }}" href="/admin/kegiatan"><i class="fas fa-calendar-alt"></i> Kelola Kegiatan</a>
+                        <a class="nav-link {{ request()->is('admin/kegiatan*') ? 'active' : '' }}" href="/admin/kegiatan"><i class="fas fa-calendar-alt"></i> Kelola Kegiatan</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/galeri') ? 'active' : '' }}" href="/admin/galeri"><i class="fas fa-images"></i> Kelola Galeri</a>
+                        <a class="nav-link {{ request()->is('admin/galeri*') ? 'active' : '' }}" href="/admin/galeri"><i class="fas fa-images"></i> Kelola Galeri</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/log-aktivitas') ? 'active' : '' }}" href="/admin/log-aktivitas"><i class="fas fa-history"></i> Log Aktivitas</a>
+                        <a class="nav-link {{ request()->is('admin/log-aktivitas*') ? 'active' : '' }}" href="/admin/log-aktivitas"><i class="fas fa-history"></i> Log Aktivitas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/pengaturan') ? 'active' : '' }}" href="/admin/pengaturan"><i class="fas fa-cogs"></i> Pengaturan</a>
+                        <a class="nav-link {{ request()->is('admin/pengaturan*') ? 'active' : '' }}" href="/admin/pengaturan"><i class="fas fa-cogs"></i> Pengaturan</a>
                     </li>
                     @endif
-                    
-                    <li class="nav-item mt-5">
+
+                    <li class="nav-item mt-4">
                         <form action="/admin/logout" method="POST">
                             @csrf
-                            <button type="submit" class="nav-link btn btn-link text-danger w-100 text-start" style="text-decoration: none;">
+                            <button type="submit" class="nav-link btn btn-link logout-btn w-100 text-start" style="text-decoration: none;">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </button>
                         </form>
@@ -129,22 +199,33 @@
             </div>
 
             <!-- KONTEN UTAMA -->
-            <div class="col-md-10 p-0">
+            <div class="col-lg-10 p-0">
                 <nav class="top-navbar d-flex justify-content-between align-items-center">
-                    <button class="btn btn-outline-dark d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMobile">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <span class="fw-bold text-dark d-none d-md-inline">Sistem Informasi Pagar Nusa</span>
-                    
+                    <div class="d-flex align-items-center gap-3">
+                        <button class="btn btn-menu d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMobile" aria-label="Buka menu">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <span class="judul-bar">Sistem Informasi Pagar Nusa</span>
+                    </div>
+
                     <div class="dropdown">
-                        <a href="#" class="text-decoration-none text-dark dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle fa-lg me-1"></i> {{ Auth::user()->nama_lengkap }} ({{ Auth::user()->peran }})
+                        <a href="#" class="pengguna" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="avatar">{{ strtoupper(mb_substr(Auth::user()->nama_lengkap, 0, 1)) }}</span>
+                            <span class="teks">
+                                <b>{{ Auth::user()->nama_lengkap }}</b>
+                                <small>{{ Auth::user()->peran }}</small>
+                            </span>
+                            <i class="fas fa-chevron-down small text-muted"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
+                            <li class="px-3 py-2 d-sm-none">
+                                <b class="d-block">{{ Auth::user()->nama_lengkap }}</b>
+                                <small class="text-muted">({{ Auth::user()->peran }})</small>
+                            </li>
                             <li>
                                 <form action="/admin/logout" method="POST">
                                     @csrf
-                                    <button class="dropdown-item text-danger" type="submit">Logout</button>
+                                    <button class="dropdown-item text-danger" type="submit"><i class="fas fa-sign-out-alt me-2"></i>Logout</button>
                                 </form>
                             </li>
                         </ul>
@@ -159,30 +240,40 @@
     </div>
 
     <!-- SIDEBAR MOBILE (OFFCANVAS) -->
-    <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="sidebarMobile" style="background-color: var(--hijau-tua) !important;">
+    <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="sidebarMobile" aria-labelledby="judulMenuMobile" style="background-color: var(--hijau-tua) !important;">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title text-warning">PAGAR NUSA</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+            <h5 class="offcanvas-title text-warning" id="judulMenuMobile">PAGAR NUSA</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Tutup"></button>
         </div>
         <div class="offcanvas-body p-0">
             <ul class="nav flex-column">
-                <li class="nav-item"><a class="nav-link text-white" href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="/admin/keuangan"><i class="fas fa-wallet"></i> Kelola Keuangan</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="/admin/siswa"><i class="fas fa-user-graduate"></i> Data Siswa</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="/admin/absensi"><i class="fas fa-clipboard-list"></i> Riwayat Absensi</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="/admin/pelatih"><i class="fas fa-user-tie"></i> Data Pelatih</a></li>
-                
+                <li class="nav-item"><a class="nav-link text-white {{ request()->is('admin/dashboard*') ? 'active' : '' }}" href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link text-white {{ request()->is('admin/keuangan*') ? 'active' : '' }}" href="/admin/keuangan"><i class="fas fa-wallet"></i> Kelola Keuangan</a></li>
+                <li class="nav-item"><a class="nav-link text-white {{ request()->is('admin/siswa*') ? 'active' : '' }}" href="/admin/siswa"><i class="fas fa-user-graduate"></i> Data Siswa</a></li>
+                <li class="nav-item"><a class="nav-link text-white {{ request()->is('admin/absensi*') ? 'active' : '' }}" href="/admin/absensi"><i class="fas fa-clipboard-list"></i> Riwayat Absensi</a></li>
+                <li class="nav-item"><a class="nav-link text-white {{ request()->is('admin/pelatih*') ? 'active' : '' }}" href="/admin/pelatih"><i class="fas fa-user-tie"></i> Data Pelatih</a></li>
+
                 @if(Auth::user()->peran == 'super_admin')
-                <li class="nav-item"><a class="nav-link text-white" href="/admin/kegiatan"><i class="fas fa-calendar-alt"></i> Kelola Kegiatan</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="/admin/galeri"><i class="fas fa-images"></i> Kelola Galeri</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="/admin/log-aktivitas"><i class="fas fa-history"></i> Log Aktivitas</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="/admin/pengaturan"><i class="fas fa-cogs"></i> Pengaturan</a></li>
+                <li class="menu-label">Khusus super admin</li>
+                <li class="nav-item"><a class="nav-link text-white {{ request()->is('admin/kegiatan*') ? 'active' : '' }}" href="/admin/kegiatan"><i class="fas fa-calendar-alt"></i> Kelola Kegiatan</a></li>
+                <li class="nav-item"><a class="nav-link text-white {{ request()->is('admin/galeri*') ? 'active' : '' }}" href="/admin/galeri"><i class="fas fa-images"></i> Kelola Galeri</a></li>
+                <li class="nav-item"><a class="nav-link text-white {{ request()->is('admin/log-aktivitas*') ? 'active' : '' }}" href="/admin/log-aktivitas"><i class="fas fa-history"></i> Log Aktivitas</a></li>
+                <li class="nav-item"><a class="nav-link text-white {{ request()->is('admin/pengaturan*') ? 'active' : '' }}" href="/admin/pengaturan"><i class="fas fa-cogs"></i> Pengaturan</a></li>
                 @endif
+
+                <li class="nav-item mt-3">
+                    <form action="/admin/logout" method="POST">
+                        @csrf
+                        <button type="submit" class="nav-link btn btn-link logout-btn w-100 text-start" style="text-decoration: none;">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </form>
+                </li>
             </ul>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     @stack('scripts')
 </body>
