@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0f3d2e">
     <title>Admin - Pagar Nusa Ulul-Albab</title>
     
@@ -41,11 +41,17 @@
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
             color: var(--tinta);
             overflow-x: hidden;
+            /* Ruang untuk bottom nav di HP */
+            padding-bottom: 0; 
         }
+        @media (max-width: 991.98px) {
+            body { padding-bottom: 75px; } 
+        }
+
         a:focus-visible, button:focus-visible { outline: 3px solid var(--emas); outline-offset: 2px; }
         .row > * { min-width: 0; }
 
-        /* ---------- SIDEBAR ---------- */
+        /* ---------- SIDEBAR (DESKTOP) ---------- */
         .sidebar {
             background-color: var(--hijau-tua);
             color: white;
@@ -61,7 +67,7 @@
 
         .menu-label { font-size: .78rem; font-weight: 600; color: rgba(255,255,255,.5); padding: 18px 20px 6px; }
 
-        .sidebar .nav-link, .offcanvas .nav-link {
+        .sidebar .nav-link {
             color: rgba(255,255,255,.82);
             padding: 11px 20px;
             font-size: .94rem; font-weight: 500;
@@ -69,13 +75,12 @@
             border-radius: 0;
             transition: background .15s, color .15s;
         }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active,
-        .offcanvas .nav-link:hover, .offcanvas .nav-link.active {
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
             background-color: var(--hijau-muda);
             color: var(--emas) !important;
             border-left: 4px solid var(--emas);
         }
-        .sidebar .nav-link i, .offcanvas .nav-link i { width: 25px; text-align: center; margin-right: 10px; }
+        .sidebar .nav-link i { width: 25px; text-align: center; margin-right: 10px; }
         .logout-btn { color: #ff9b94 !important; }
         .logout-btn:hover { background-color: rgba(179,50,43,.2) !important; border-left-color: #ff9b94 !important; color: #ffb9b4 !important; }
 
@@ -88,9 +93,7 @@
             position: sticky; top: 0; z-index: 1020;
         }
         .top-navbar .judul-bar { font-family: 'Fraunces', serif; font-weight: 700; color: var(--hijau-tua); font-size: 1.05rem; }
-        .btn-menu { border: 1.5px solid var(--garis); color: var(--hijau-tua); border-radius: 12px; width: 44px; height: 44px; padding: 0; background: #fff; }
-        .btn-menu:hover { background: var(--hijau-pucat); color: var(--hijau-tua); border-color: var(--hijau-pucat); }
-
+        
         .pengguna { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--tinta); padding: 4px 6px; border-radius: 12px; }
         .pengguna:hover { background: var(--bg-body); color: var(--tinta); }
         .pengguna .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--hijau); color: #fff; display: grid; place-items: center; font-weight: 700; flex-shrink: 0; }
@@ -103,7 +106,7 @@
         /* ---------- KONTEN ---------- */
         .main-content { padding: 30px; }
 
-        /* Poles komponen Bootstrap yang dipakai halaman-halaman admin */
+        /* Poles komponen Bootstrap */
         .main-content .card { border: 1px solid var(--garis); border-radius: var(--radius); box-shadow: none; }
         .main-content .card-header { background: #fff; border-bottom: 1px solid var(--garis); font-weight: 600; }
         .main-content h1, .main-content h2, .main-content h3, .main-content h4 { font-family: 'Fraunces', serif; color: var(--hijau-tua); letter-spacing: -0.01em; }
@@ -120,15 +123,79 @@
         .main-content .page-link { color: var(--hijau); }
         .main-content .active > .page-link { background: var(--hijau); border-color: var(--hijau); color: #fff; }
 
-        /* ---------- OFFCANVAS (HP & tablet) ---------- */
-        .offcanvas { width: 290px; border-right: 3px solid var(--emas); }
-        .offcanvas-header { padding: 18px 20px; }
-        .offcanvas-title { font-family: 'Fraunces', serif; font-weight: 700; color: var(--emas) !important; }
-        .offcanvas .nav-link { padding: 14px 20px; font-size: 1rem; } /* area sentuh lebih besar */
+        /* ---------- OFFCANVAS (MENU APP STYLE) ---------- */
+        .offcanvas { width: 300px; border-right: 3px solid var(--emas); }
+        .offcanvas-header { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .offcanvas-title { font-family: 'Fraunces', serif; font-weight: 700; color: var(--emas) !important; font-size: 1.2rem; }
+        
+        /* Profil di dalam Offcanvas */
+        .offcanvas-profil { display: flex; align-items: center; gap: 15px; padding: 20px; background: rgba(0,0,0,0.2); margin: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
+        .offcanvas-profil .avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--emas); color: var(--hijau-tua); display: grid; place-items: center; font-weight: 700; font-size: 1.2rem; }
+        .offcanvas-profil .nama { color: white; font-weight: 600; font-size: 1rem; line-height: 1.2; display: block; }
+        .offcanvas-profil .peran { color: var(--emas); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .offcanvas .nav-link {
+            color: rgba(255,255,255,.85);
+            padding: 14px 20px;
+            font-size: .95rem; font-weight: 500;
+            border-left: 4px solid transparent;
+            display: flex; align-items: center;
+        }
+        .offcanvas .nav-link:hover, .offcanvas .nav-link.active {
+            background-color: var(--hijau-muda);
+            color: var(--emas) !important;
+            border-left: 4px solid var(--emas);
+        }
+        .offcanvas .nav-link i { width: 30px; text-align: center; margin-right: 12px; font-size: 1.1rem; }
+
+        /* ---------- BOTTOM NAVIGATION (HP) ---------- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: white;
+            border-top: 1px solid var(--garis);
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+            display: none; /* Disembunyikan di desktop */
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 5px calc(8px + env(safe-area-inset-bottom));
+            z-index: 1030;
+        }
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--abu);
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 600;
+            flex: 1;
+            padding: 4px 0;
+            transition: color 0.2s;
+        }
+        .bottom-nav-item i {
+            font-size: 1.3rem;
+            margin-bottom: 3px;
+            transition: transform 0.2s;
+        }
+        .bottom-nav-item.active {
+            color: var(--hijau-tua);
+        }
+        .bottom-nav-item.active i {
+            color: var(--hijau-tua);
+            transform: scale(1.1);
+        }
+        .bottom-nav-item:active {
+            background-color: var(--bg-body);
+            border-radius: 10px;
+        }
 
         @media (max-width: 991.98px) {
             .main-content { padding: 18px 14px 40px; }
             .top-navbar { padding: 8px 14px; }
+            .bottom-nav { display: flex; } /* Tampilkan bottom nav di HP */
+            .judul-bar { font-size: 0.95rem; } /* Kecilkan teks judul */
         }
         @media (max-width: 575.98px) {
             .pengguna .teks { display: none; }
@@ -152,40 +219,18 @@
                     </span>
                 </a>
                 <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/dashboard*') ? 'active' : '' }}" href="/admin/dashboard">
-                            <i class="fas fa-tachometer-alt"></i> Dashboard
-                        </a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link {{ request()->is('admin/dashboard*') ? 'active' : '' }}" href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->is('admin/keuangan*') ? 'active' : '' }}" href="/admin/keuangan"><i class="fas fa-wallet"></i> Kelola Keuangan</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->is('admin/siswa*') ? 'active' : '' }}" href="/admin/siswa"><i class="fas fa-user-graduate"></i> Data Siswa</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->is('admin/absensi*') ? 'active' : '' }}" href="/admin/absensi"><i class="fas fa-clipboard-list"></i> Riwayat Absensi</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->is('admin/pelatih*') ? 'active' : '' }}" href="/admin/pelatih"><i class="fas fa-user-tie"></i> Data Pelatih</a></li>
 
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/keuangan*') ? 'active' : '' }}" href="/admin/keuangan"><i class="fas fa-wallet"></i> Kelola Keuangan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/siswa*') ? 'active' : '' }}" href="/admin/siswa"><i class="fas fa-user-graduate"></i> Data Siswa</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/absensi*') ? 'active' : '' }}" href="/admin/absensi"><i class="fas fa-clipboard-list"></i> Riwayat Absensi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/pelatih*') ? 'active' : '' }}" href="/admin/pelatih"><i class="fas fa-user-tie"></i> Data Pelatih</a>
-                    </li>
-
-                    <!-- MENU KHUSUS SUPER ADMIN -->
                     @if(Auth::user()->peran == 'super_admin')
                     <li class="menu-label">Khusus super admin</li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/kegiatan*') ? 'active' : '' }}" href="/admin/kegiatan"><i class="fas fa-calendar-alt"></i> Kelola Kegiatan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/galeri*') ? 'active' : '' }}" href="/admin/galeri"><i class="fas fa-images"></i> Kelola Galeri</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/log-aktivitas*') ? 'active' : '' }}" href="/admin/log-aktivitas"><i class="fas fa-history"></i> Log Aktivitas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/pengaturan*') ? 'active' : '' }}" href="/admin/pengaturan"><i class="fas fa-cogs"></i> Pengaturan</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link {{ request()->is('admin/kegiatan*') ? 'active' : '' }}" href="/admin/kegiatan"><i class="fas fa-calendar-alt"></i> Kelola Kegiatan</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->is('admin/galeri*') ? 'active' : '' }}" href="/admin/galeri"><i class="fas fa-images"></i> Kelola Galeri</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->is('admin/log-aktivitas*') ? 'active' : '' }}" href="/admin/log-aktivitas"><i class="fas fa-history"></i> Log Aktivitas</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->is('admin/pengaturan*') ? 'active' : '' }}" href="/admin/pengaturan"><i class="fas fa-cogs"></i> Pengaturan</a></li>
                     @endif
 
                     <li class="nav-item mt-4">
@@ -201,11 +246,9 @@
 
             <!-- KONTEN UTAMA -->
             <div class="col-lg-10 p-0">
+                <!-- TOP NAVBAR -->
                 <nav class="top-navbar d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center gap-3">
-                        <button class="btn btn-menu d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMobile" aria-label="Buka menu">
-                            <i class="fas fa-bars"></i>
-                        </button>
                         <span class="judul-bar">Sistem Informasi Pagar Nusa</span>
                     </div>
 
@@ -240,14 +283,54 @@
         </div>
     </div>
 
-    <!-- SIDEBAR MOBILE (OFFCANVAS) -->
+    <!-- ============================================== -->
+    <!-- BOTTOM NAVIGATION BAR (KHUSUS SMARTPHONE)      -->
+    <!-- ============================================== -->
+    <div class="bottom-nav d-lg-none">
+        <a href="/admin/dashboard" class="bottom-nav-item {{ request()->is('admin/dashboard*') ? 'active' : '' }}">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="/admin/keuangan" class="bottom-nav-item {{ request()->is('admin/keuangan*') ? 'active' : '' }}">
+            <i class="fas fa-wallet"></i>
+            <span>Keuangan</span>
+        </a>
+        <a href="/admin/siswa" class="bottom-nav-item {{ request()->is('admin/siswa*') ? 'active' : '' }}">
+            <i class="fas fa-user-graduate"></i>
+            <span>Siswa</span>
+        </a>
+        <a href="/admin/absensi" class="bottom-nav-item {{ request()->is('admin/absensi*') ? 'active' : '' }}">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Absensi</span>
+        </a>
+        <!-- Tombol Buka Menu Lengkap -->
+        <a href="#" class="bottom-nav-item" data-bs-toggle="offcanvas" data-bs-target="#sidebarMobile">
+            <i class="fas fa-bars"></i>
+            <span>Menu</span>
+        </a>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- OFFCANVAS MENU LENGKAP (APP STYLE)             -->
+    <!-- ============================================== -->
     <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="sidebarMobile" aria-labelledby="judulMenuMobile" style="background-color: var(--hijau-tua) !important;">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title text-warning" id="judulMenuMobile">PAGAR NUSA</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Tutup"></button>
         </div>
-        <div class="offcanvas-body p-0">
-            <ul class="nav flex-column">
+        
+        <div class="offcanvas-body p-0 d-flex flex-column">
+            <!-- Profil Pengguna di Menu -->
+            <div class="offcanvas-profil">
+                <div class="avatar">{{ strtoupper(mb_substr(Auth::user()->nama_lengkap, 0, 1)) }}</div>
+                <div>
+                    <span class="nama">{{ Auth::user()->nama_lengkap }}</span>
+                    <span class="peran">{{ Auth::user()->peran }}</span>
+                </div>
+            </div>
+
+            <!-- List Menu -->
+            <ul class="nav flex-column flex-grow-1">
                 <li class="nav-item"><a class="nav-link text-white {{ request()->is('admin/dashboard*') ? 'active' : '' }}" href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link text-white {{ request()->is('admin/keuangan*') ? 'active' : '' }}" href="/admin/keuangan"><i class="fas fa-wallet"></i> Kelola Keuangan</a></li>
                 <li class="nav-item"><a class="nav-link text-white {{ request()->is('admin/siswa*') ? 'active' : '' }}" href="/admin/siswa"><i class="fas fa-user-graduate"></i> Data Siswa</a></li>
@@ -261,21 +344,21 @@
                 <li class="nav-item"><a class="nav-link text-white {{ request()->is('admin/log-aktivitas*') ? 'active' : '' }}" href="/admin/log-aktivitas"><i class="fas fa-history"></i> Log Aktivitas</a></li>
                 <li class="nav-item"><a class="nav-link text-white {{ request()->is('admin/pengaturan*') ? 'active' : '' }}" href="/admin/pengaturan"><i class="fas fa-cogs"></i> Pengaturan</a></li>
                 @endif
-
-                <li class="nav-item mt-3">
-                    <form action="/admin/logout" method="POST">
-                        @csrf
-                        <button type="submit" class="nav-link btn btn-link logout-btn w-100 text-start" style="text-decoration: none;">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </button>
-                    </form>
-                </li>
             </ul>
+
+            <!-- Tombol Logout di Bawah -->
+            <div class="p-3 mt-auto border-top border-secondary border-opacity-25">
+                <form action="/admin/logout" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-danger w-100 py-2" style="border-radius: 10px; font-weight: 600;">
+                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
     @stack('scripts')
 </body>
 </html>

@@ -1,18 +1,34 @@
 @extends('admin.layouts.app')
 
 @section('content')
+    @php
+        // Hitung filter yang terisi
+        $jumlahFilter = collect(['nama', 'status'])->filter(fn($f) => request()->filled($f))->count();
+    @endphp
+
     <style>
         /* ---------- Data Siswa ---------- */
-        .sw-judul { font-size: clamp(1.4rem, 4vw, 1.8rem); margin: 0; }
+        .sw-judul { font-size: clamp(1.3rem, 4vw, 1.8rem); margin: 0; }
         .sw-aksi .btn { padding: 10px 18px; }
         .sw-aksi .btn-success { background: #1d6b4f; border-color: #1d6b4f; }
         .sw-aksi .btn-success:hover { background: #0f3d2e; border-color: #0f3d2e; }
+        
         @media (max-width: 575.98px) {
             .sw-aksi { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
             .sw-aksi .btn { margin: 0 !important; width: 100%; }
         }
 
         /* Filter */
+        .sw-filter-toggle {
+            display: flex; align-items: center; gap: 10px; justify-content: center;
+            background: #fff; border: 1.5px solid #dbe5df; color: #0f3d2e; font-weight: 600;
+            border-radius: 12px; padding: 12px; margin-bottom: 10px;
+        }
+        .sw-filter-toggle:hover { background: #e8f1ec; color: #0f3d2e; }
+        .sw-filter-toggle .jml { background: #1d6b4f; color: #fff; border-radius: 999px; font-size: .75rem; padding: 2px 9px; }
+        .sw-filter-toggle .panah { transition: transform .2s; margin-left: auto; }
+        .sw-filter-toggle[aria-expanded="true"] .panah { transform: rotate(180deg); }
+
         .sw-filter { background: #fff; border: 1px solid #dbe5df !important; border-radius: 14px; }
         .sw-filter .form-label { font-size: .85rem; margin-bottom: 5px; }
         .sw-filter .form-control, .sw-filter .form-select { font-size: 1rem; padding: 11px 13px; }
@@ -20,13 +36,14 @@
         .sw-reset { display: inline-block; margin-top: 8px; font-size: .88rem; font-weight: 600; color: #5d6b64; text-decoration: none; }
         .sw-reset:hover { color: #b3322b; }
 
-        /* Tabel */
+        /* Tabel Utama */
         .sw-tabel .nama-sel { display: flex; align-items: center; gap: 12px; font-weight: 600; color: #0f3d2e; }
         .sw-avatar { width: 36px; height: 36px; border-radius: 50%; background: #e8f1ec; color: #1d6b4f; display: grid; place-items: center; font-weight: 700; font-size: .9rem; flex-shrink: 0; }
         .sw-tabel .badge { padding: .45em .8em; border-radius: 999px; }
         .sw-tabel .badge.bg-success { background: #e8f1ec !important; color: #0f3d2e; }
         .sw-tabel .badge.bg-warning { background: #fff4d1 !important; color: #6b5200 !important; }
         .sw-tabel .badge.bg-danger { background: #fbeceb !important; color: #8f2620; }
+        
         .sw-tabel .aksi-grup { display: flex; gap: 6px; flex-wrap: wrap; }
         .sw-tabel .aksi-grup .btn { border-radius: 10px; }
         .sw-tabel .btn-ikon { width: 38px; height: 38px; padding: 0; display: inline-grid; place-items: center; }
@@ -34,26 +51,23 @@
         .sw-tabel .btn-warning:hover { background: #a8861a; border-color: #a8861a; color: #fff !important; }
         .sw-kosong { padding: 36px 12px !important; color: #5d6b64; }
 
-        /* Tabel jadi kartu di HP */
+        /* ---------- Tampilan Tabel di HP (Mobile) ---------- */
         @media (max-width: 767.98px) {
-            .sw-tabel thead { display: none; }
-            .sw-tabel, .sw-tabel tbody, .sw-tabel tr, .sw-tabel td { display: block; width: 100%; }
-            .sw-tabel tbody tr { border: 1px solid #dbe5df; border-radius: 12px; margin-bottom: 12px; padding: 6px 14px 12px; background: #fff; }
-            .sw-tabel td { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 9px 0 !important; border: 0; border-bottom: 1px dashed #e3ebe6; text-align: right; }
-            .sw-tabel td::before { content: attr(data-label); font-size: .8rem; font-weight: 600; color: #5d6b64; text-align: left; flex-shrink: 0; }
-            .sw-tabel td.no { display: none; }
-            .sw-tabel td.nama { font-size: 1.02rem; padding-top: 12px !important; }
-            .sw-tabel td.nama::before { content: none; }
-            .sw-tabel td.nama .nama-sel { width: 100%; text-align: left; }
-            .sw-tabel td.aksi { border-bottom: 0; padding: 12px 0 0 !important; display: block; }
-            .sw-tabel td.aksi::before { content: none; }
-            .sw-tabel td.aksi .aksi-grup { flex-wrap: nowrap; }
-            .sw-tabel td.aksi .btn-absen { flex: 1; height: 42px; }
-            .sw-tabel .btn-ikon { width: 42px; height: 42px; }
-            .sw-tabel td.sw-kosong { display: block; text-align: center; }
-            .sw-tabel td.sw-kosong::before { content: none; }
-            .sw-card-tabel { background: transparent !important; border: 0 !important; }
-            .sw-card-tabel .card-body { padding: 0; }
+            /* Paksa tabel tetap berupa tabel dan bisa di-scroll */
+            .sw-card-tabel .card-body { padding: 10px; }
+            .sw-tabel { min-width: 700px; /* Lebar minimum agar kolom tidak berdesakan */ }
+            
+            .sw-tabel th, .sw-tabel td {
+                font-size: 0.8rem; /* Perkecil font */
+                padding: 8px 6px !important;
+                white-space: nowrap; /* Cegah teks turun ke bawah */
+            }
+            
+            /* Perkecil tombol dan avatar di HP */
+            .sw-tabel .btn-ikon { width: 32px; height: 32px; font-size: 0.75rem; }
+            .sw-tabel .btn-absen { font-size: 0.75rem; padding: 4px 8px; height: 32px; }
+            .sw-tabel .badge { font-size: 0.7rem; padding: 0.3em 0.6em; }
+            .sw-tabel .sw-avatar { width: 28px; height: 28px; font-size: 0.75rem; }
         }
 
         /* Modal */
@@ -79,6 +93,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
+    
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
         <h2 class="fw-bold sw-judul" style="color: var(--hijau-tua);">Data Siswa</h2>
         <div class="sw-aksi">
@@ -99,30 +114,39 @@
         </div>
     @endif
 
-    <!-- FORM FILTER (BARU) -->
-    <div class="card border-0 shadow-sm mb-4 sw-filter">
-        <div class="card-body">
-            <form action="/admin/siswa" method="GET" class="row g-3 align-items-end">
-                <div class="col-12 col-md-5">
-                    <label class="form-label" for="f_nama">Cari Nama Siswa</label>
-                    <input type="text" id="f_nama" name="nama" class="form-control" placeholder="Ketik nama siswa..." value="{{ request('nama') }}">
-                </div>
-                <div class="col-12 col-md-4">
-                    <label class="form-label" for="f_status">Status</label>
-                    <select id="f_status" name="status" class="form-select">
-                        <option value="">Semua Status</option>
-                        <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                        <option value="nonaktif" {{ request('status') == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
-                    </select>
-                </div>
-                <div class="col-12 col-md-3">
-                    <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Filter Data</button>
-                </div>
-            </form>
-            @if(request()->hasAny(['nama', 'status']))
-                <a href="/admin/siswa" class="sw-reset"><i class="fas fa-rotate-left me-1"></i>Hapus semua filter</a>
-            @endif
+    <!-- FILTER TOGGLE (KHUSUS HP) -->
+    <button class="btn sw-filter-toggle d-md-none w-100" type="button" data-bs-toggle="collapse" data-bs-target="#panelFilterSiswa" aria-expanded="{{ $jumlahFilter ? 'true' : 'false' }}" aria-controls="panelFilterSiswa">
+        <i class="fas fa-filter"></i> Filter Data Siswa
+        @if($jumlahFilter)<span class="jml">{{ $jumlahFilter }}</span>@endif
+        <i class="fas fa-chevron-down panah"></i>
+    </button>
+
+    <!-- FORM FILTER -->
+    <div class="collapse d-md-block {{ $jumlahFilter ? 'show' : '' }}" id="panelFilterSiswa">
+        <div class="card border-0 shadow-sm mb-4 sw-filter">
+            <div class="card-body">
+                <form action="/admin/siswa" method="GET" class="row g-3 align-items-end">
+                    <div class="col-12 col-md-5">
+                        <label class="form-label" for="f_nama">Cari Nama Siswa</label>
+                        <input type="text" id="f_nama" name="nama" class="form-control" placeholder="Ketik nama siswa..." value="{{ request('nama') }}">
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label class="form-label" for="f_status">Status</label>
+                        <select id="f_status" name="status" class="form-select">
+                            <option value="">Semua Status</option>
+                            <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="nonaktif" {{ request('status') == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Terapkan</button>
+                    </div>
+                </form>
+                @if($jumlahFilter)
+                    <a href="/admin/siswa" class="sw-reset"><i class="fas fa-rotate-left me-1"></i>Hapus semua filter</a>
+                @endif
+            </div>
         </div>
     </div>
 
@@ -131,25 +155,25 @@
             <table class="table table-hover align-middle sw-tabel mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th>No</th>
+                        <th width="5%">No</th>
                         <th>Nama Siswa</th>
                         <th>No HP</th>
                         <th>Status</th>
-                        <th>Aksi</th>
+                        <th width="15%">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($siswa as $index => $s)
                     <tr>
-                        <td class="no" data-label="No">{{ $index + 1 }}</td>
-                        <td class="nama" data-label="Nama Siswa">
+                        <td class="no">{{ $index + 1 }}</td>
+                        <td class="nama">
                             <div class="nama-sel">
                                 <span class="sw-avatar">{{ strtoupper(mb_substr($s->nama_siswa, 0, 1)) }}</span>
                                 <span>{{ $s->nama_siswa }}</span>
                             </div>
                         </td>
-                        <td data-label="No HP">{{ $s->no_hp }}</td>
-                        <td data-label="Status">
+                        <td>{{ $s->no_hp }}</td>
+                        <td>
                             @if($s->status == 'aktif')
                                 <span class="badge bg-success">Aktif</span>
                             @elseif($s->status == 'pending')
@@ -173,7 +197,7 @@
                                 <button class="btn btn-sm btn-warning text-dark fw-bold btn-absen" data-bs-toggle="modal" data-bs-target="#modalAbsensi"
                                     data-id="{{ $s->id }}"
                                     data-nama="{{ $s->nama_siswa }}">
-                                    <i class="fas fa-clipboard-check"></i> Absen/Kas
+                                    <i class="fas fa-clipboard-check"></i> Absen
                                 </button>
 
                                 <button class="btn btn-sm btn-danger btn-ikon" data-bs-toggle="modal" data-bs-target="#modalHapus"
