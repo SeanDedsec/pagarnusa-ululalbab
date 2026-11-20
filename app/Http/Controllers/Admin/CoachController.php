@@ -8,9 +8,24 @@ use App\Models\Pelatih;
 
 class CoachController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pelatih = Pelatih::orderBy('created_at', 'desc')->get();
+        // Mulai query
+        $query = Pelatih::orderBy('created_at', 'desc');
+
+        // Filter berdasarkan Nama Pelatih
+        if ($request->filled('nama')) {
+            $query->where('nama_pelatih', 'like', '%' . $request->nama . '%');
+        }
+
+        // Filter berdasarkan Alamat
+        if ($request->filled('alamat')) {
+            $query->where('alamat', 'like', '%' . $request->alamat . '%');
+        }
+
+        // Ambil data hasil filter
+        $pelatih = $query->get();
+        
         return view('admin.pages.coaches', compact('pelatih'));
     }
 

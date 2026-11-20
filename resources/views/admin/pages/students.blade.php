@@ -7,15 +7,22 @@
     @endphp
 
     <style>
+        /* ---------- Optimasi Ketajaman Teks ---------- */
+        .sw-judul, .sw-tabel, .sw-modal, .sw-filter {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
         /* ---------- Data Siswa ---------- */
-        .sw-judul { font-size: clamp(1.3rem, 4vw, 1.8rem); margin: 0; }
-        .sw-aksi .btn { padding: 10px 18px; }
+        .sw-judul { font-size: clamp(1.3rem, 4vw, 1.8rem); margin: 0; letter-spacing: -0.5px; }
+        .sw-aksi .btn { padding: 10px 18px; font-weight: 600; }
         .sw-aksi .btn-success { background: #1d6b4f; border-color: #1d6b4f; }
         .sw-aksi .btn-success:hover { background: #0f3d2e; border-color: #0f3d2e; }
         
         @media (max-width: 575.98px) {
             .sw-aksi { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-            .sw-aksi .btn { margin: 0 !important; width: 100%; }
+            .sw-aksi .btn { margin: 0 !important; width: 100%; font-size: 0.9rem; }
         }
 
         /* Filter */
@@ -25,60 +32,74 @@
             border-radius: 12px; padding: 12px; margin-bottom: 10px;
         }
         .sw-filter-toggle:hover { background: #e8f1ec; color: #0f3d2e; }
-        .sw-filter-toggle .jml { background: #1d6b4f; color: #fff; border-radius: 999px; font-size: .75rem; padding: 2px 9px; }
+        .sw-filter-toggle .jml { background: #1d6b4f; color: #fff; border-radius: 999px; font-size: .75rem; padding: 2px 9px; font-weight: 700; }
         .sw-filter-toggle .panah { transition: transform .2s; margin-left: auto; }
         .sw-filter-toggle[aria-expanded="true"] .panah { transform: rotate(180deg); }
 
         .sw-filter { background: #fff; border: 1px solid #dbe5df !important; border-radius: 14px; }
-        .sw-filter .form-label { font-size: .85rem; margin-bottom: 5px; }
-        .sw-filter .form-control, .sw-filter .form-select { font-size: 1rem; padding: 11px 13px; }
-        .sw-filter .btn-primary { padding: 11px; }
+        .sw-filter .form-label { font-size: .85rem; font-weight: 600; margin-bottom: 5px; }
+        .sw-filter .form-control, .sw-filter .form-select { font-size: 0.95rem; padding: 11px 13px; font-weight: 500; }
+        .sw-filter .btn-primary { padding: 11px; font-weight: 600; }
         .sw-reset { display: inline-block; margin-top: 8px; font-size: .88rem; font-weight: 600; color: #5d6b64; text-decoration: none; }
         .sw-reset:hover { color: #b3322b; }
 
         /* Tabel Utama */
-        .sw-tabel .nama-sel { display: flex; align-items: center; gap: 12px; font-weight: 600; color: #0f3d2e; }
-        .sw-avatar { width: 36px; height: 36px; border-radius: 50%; background: #e8f1ec; color: #1d6b4f; display: grid; place-items: center; font-weight: 700; font-size: .9rem; flex-shrink: 0; }
-        .sw-tabel .badge { padding: .45em .8em; border-radius: 999px; }
+        .sw-tabel .nama-sel { display: flex; align-items: center; gap: 10px; font-weight: 600; color: #0f3d2e; }
+        .sw-avatar { width: 34px; height: 34px; border-radius: 50%; background: #e8f1ec; color: #1d6b4f; display: grid; place-items: center; font-weight: 700; font-size: .85rem; flex-shrink: 0; }
+        
+        .sw-tabel th { font-weight: 700; color: #16241d; font-size: 0.85rem; letter-spacing: 0.3px; }
+        .sw-tabel td { font-weight: 500; color: #333; font-size: 0.9rem; }
+        
+        .sw-tabel .badge { padding: .45em .8em; border-radius: 999px; font-weight: 600; }
         .sw-tabel .badge.bg-success { background: #e8f1ec !important; color: #0f3d2e; }
         .sw-tabel .badge.bg-warning { background: #fff4d1 !important; color: #6b5200 !important; }
         .sw-tabel .badge.bg-danger { background: #fbeceb !important; color: #8f2620; }
         
-        .sw-tabel .aksi-grup { display: flex; gap: 6px; flex-wrap: wrap; }
-        .sw-tabel .aksi-grup .btn { border-radius: 10px; }
-        .sw-tabel .btn-ikon { width: 38px; height: 38px; padding: 0; display: inline-grid; place-items: center; }
+        /* Tombol Aksi */
+        .sw-tabel .aksi-grup { 
+            display: flex; 
+            flex-direction: row; /* Memastikan horizontal */
+            flex-wrap: nowrap; /* Mencegah turun ke bawah */
+            gap: 6px; 
+            align-items: center;
+        }
+        .sw-tabel .aksi-grup .btn { border-radius: 8px; flex-shrink: 0; }
+        .sw-tabel .btn-ikon { width: 36px; height: 36px; padding: 0; display: inline-grid; place-items: center; }
+        .sw-tabel .btn-absen { height: 36px; padding: 0 10px; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; }
+        
         .sw-tabel .btn-warning { background: #c9a227; border-color: #c9a227; }
         .sw-tabel .btn-warning:hover { background: #a8861a; border-color: #a8861a; color: #fff !important; }
-        .sw-kosong { padding: 36px 12px !important; color: #5d6b64; }
+        .sw-kosong { padding: 36px 12px !important; color: #5d6b64; font-weight: 500; }
 
         /* ---------- Tampilan Tabel di HP (Mobile) ---------- */
         @media (max-width: 767.98px) {
-            /* Paksa tabel tetap berupa tabel dan bisa di-scroll */
             .sw-card-tabel .card-body { padding: 10px; }
-            .sw-tabel { min-width: 700px; /* Lebar minimum agar kolom tidak berdesakan */ }
+            .sw-tabel { min-width: 750px; /* Lebar minimum agar proporsional */ }
             
             .sw-tabel th, .sw-tabel td {
-                font-size: 0.8rem; /* Perkecil font */
+                font-size: 0.8rem; 
                 padding: 8px 6px !important;
-                white-space: nowrap; /* Cegah teks turun ke bawah */
+                white-space: nowrap;
             }
             
-            /* Perkecil tombol dan avatar di HP */
+            .sw-tabel .sw-avatar { width: 28px; height: 28px; font-size: 0.75rem; margin-right: 2px; }
+            
+            /* Ukuran tombol aksi di HP agar pas horizontal */
             .sw-tabel .btn-ikon { width: 32px; height: 32px; font-size: 0.75rem; }
-            .sw-tabel .btn-absen { font-size: 0.75rem; padding: 4px 8px; height: 32px; }
-            .sw-tabel .badge { font-size: 0.7rem; padding: 0.3em 0.6em; }
-            .sw-tabel .sw-avatar { width: 28px; height: 28px; font-size: 0.75rem; }
+            .sw-tabel .btn-absen { height: 32px; padding: 0 8px; font-size: 0.7rem; }
+            .sw-tabel .aksi-grup { gap: 4px; }
         }
 
         /* Modal */
         .sw-modal .modal-content { border: 0; border-radius: 18px; overflow: hidden; }
         .sw-modal .modal-header { border-bottom: 1px solid #dbe5df; padding: 18px 22px; }
-        .sw-modal .modal-title { font-family: 'Fraunces', serif; font-weight: 700; color: #0f3d2e; font-size: 1.2rem; }
+        .sw-modal .modal-title { font-family: 'Fraunces', serif; font-weight: 700; color: #0f3d2e; font-size: 1.2rem; letter-spacing: -0.3px; }
         .sw-modal .modal-header.bg-warning { background: #fff4d1 !important; border-bottom-color: #ecd98c; }
         .sw-modal .modal-header.bg-warning .modal-title { color: #4d3b00 !important; }
         .sw-modal .modal-body { padding: 20px 22px; }
         .sw-modal .modal-footer { border-top: 1px solid #dbe5df; background: #f4f7f5; padding: 14px 22px; }
-        .sw-modal .form-control, .sw-modal .form-select { font-size: 1rem; padding: 11px 13px; }
+        .sw-modal .form-label { font-weight: 600; font-size: 0.9rem; }
+        .sw-modal .form-control, .sw-modal .form-select { font-size: 0.95rem; padding: 10px 13px; font-weight: 500; }
         .sw-modal .btn { border-radius: 999px; padding: 9px 22px; font-weight: 600; }
         .sw-modal .btn-success { background: #1d6b4f; border-color: #1d6b4f; }
         .sw-modal .btn-success:hover { background: #0f3d2e; border-color: #0f3d2e; }
@@ -159,7 +180,7 @@
                         <th>Nama Siswa</th>
                         <th>No HP</th>
                         <th>Status</th>
-                        <th width="15%">Aksi</th>
+                        <th width="20%">Aksi</th> <!-- Lebar Aksi ditambah agar muat 3 tombol -->
                     </tr>
                 </thead>
                 <tbody>

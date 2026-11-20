@@ -1,50 +1,88 @@
 @extends('admin.layouts.app')
 
 @section('content')
+    @php
+        // Hitung filter yang terisi
+        $jumlahFilter = collect(['nama', 'alamat'])->filter(fn($f) => request()->filled($f))->count();
+    @endphp
+
     <style>
+        /* ---------- Optimasi Ketajaman Teks ---------- */
+        .pl-judul, .pl-tabel, .pl-modal, .pl-filter {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
         /* ---------- Data Pelatih ---------- */
-        .pl-judul { font-size: clamp(1.4rem, 4vw, 1.8rem); margin: 0; }
-        .pl-tambah { background: #1d6b4f; border-color: #1d6b4f; padding: 10px 18px; }
+        .pl-judul { font-size: clamp(1.3rem, 4vw, 1.8rem); margin: 0; letter-spacing: -0.5px; }
+        .pl-tambah { background: #1d6b4f; border-color: #1d6b4f; padding: 10px 18px; font-weight: 600; }
         .pl-tambah:hover { background: #0f3d2e; border-color: #0f3d2e; }
+        
         @media (max-width: 575.98px) {
             .pl-tambah { width: 100%; }
         }
 
-        /* Tabel */
-        .pl-tabel .nama-sel { display: flex; align-items: center; gap: 12px; font-weight: 700; color: #0f3d2e; }
-        .pl-avatar { width: 36px; height: 36px; border-radius: 50%; background: #1d6b4f; color: #fff; display: grid; place-items: center; font-weight: 700; font-size: .9rem; flex-shrink: 0; }
-        .pl-tabel .aksi-grup { display: flex; gap: 6px; }
-        .pl-tabel .btn-ikon { width: 38px; height: 38px; padding: 0; display: inline-grid; place-items: center; border-radius: 10px; }
-        .pl-kosong { padding: 36px 12px !important; color: #5d6b64; }
+        /* Filter */
+        .pl-filter-toggle {
+            display: flex; align-items: center; gap: 10px; justify-content: center;
+            background: #fff; border: 1.5px solid #dbe5df; color: #0f3d2e; font-weight: 600;
+            border-radius: 12px; padding: 12px; margin-bottom: 10px;
+        }
+        .pl-filter-toggle:hover { background: #e8f1ec; color: #0f3d2e; }
+        .pl-filter-toggle .jml { background: #1d6b4f; color: #fff; border-radius: 999px; font-size: .75rem; padding: 2px 9px; font-weight: 700; }
+        .pl-filter-toggle .panah { transition: transform .2s; margin-left: auto; }
+        .pl-filter-toggle[aria-expanded="true"] .panah { transform: rotate(180deg); }
 
-        /* Tabel jadi kartu di HP */
+        .pl-filter { background: #fff; border: 1px solid #dbe5df !important; border-radius: 14px; }
+        .pl-filter .form-label { font-size: .85rem; font-weight: 600; margin-bottom: 5px; }
+        .pl-filter .form-control, .pl-filter .form-select { font-size: 0.95rem; padding: 11px 13px; font-weight: 500; }
+        .pl-filter .btn-primary { padding: 11px; font-weight: 600; }
+        .pl-reset { display: inline-block; margin-top: 8px; font-size: .88rem; font-weight: 600; color: #5d6b64; text-decoration: none; }
+        .pl-reset:hover { color: #b3322b; }
+
+        /* Tabel Utama */
+        .pl-tabel .nama-sel { display: flex; align-items: center; gap: 10px; font-weight: 600; color: #0f3d2e; }
+        .pl-avatar { width: 34px; height: 34px; border-radius: 50%; background: #e8f1ec; color: #1d6b4f; display: grid; place-items: center; font-weight: 700; font-size: .85rem; flex-shrink: 0; }
+        
+        .pl-tabel th { font-weight: 700; color: #16241d; font-size: 0.85rem; letter-spacing: 0.3px; }
+        .pl-tabel td { font-weight: 500; color: #333; font-size: 0.9rem; }
+        
+        /* Tombol Aksi */
+        .pl-tabel .aksi-grup { 
+            display: flex; 
+            flex-direction: row; /* Memastikan sejajar ke samping */
+            flex-wrap: nowrap; /* Mencegah turun ke bawah */
+            gap: 6px; 
+            align-items: center;
+        }
+        .pl-tabel .btn-ikon { width: 36px; height: 36px; padding: 0; display: inline-grid; place-items: center; border-radius: 8px; flex-shrink: 0; }
+        .pl-kosong { padding: 36px 12px !important; color: #5d6b64; font-weight: 500; }
+
+        /* ---------- Tampilan Tabel di HP (Mobile) ---------- */
         @media (max-width: 767.98px) {
-            .pl-tabel thead { display: none; }
-            .pl-tabel, .pl-tabel tbody, .pl-tabel tr, .pl-tabel td { display: block; width: 100%; }
-            .pl-tabel tbody tr { border: 1px solid #dbe5df; border-radius: 12px; margin-bottom: 12px; padding: 6px 14px 12px; background: #fff; }
-            .pl-tabel td { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 9px 0 !important; border: 0; border-bottom: 1px dashed #e3ebe6; text-align: right; }
-            .pl-tabel td::before { content: attr(data-label); font-size: .8rem; font-weight: 600; color: #5d6b64; text-align: left; flex-shrink: 0; }
-            .pl-tabel td.no { display: none; }
-            .pl-tabel td.nama { padding-top: 12px !important; font-size: 1.02rem; }
-            .pl-tabel td.nama::before { content: none; }
-            .pl-tabel td.nama .nama-sel { width: 100%; text-align: left; }
-            .pl-tabel td.aksi { border-bottom: 0; padding: 12px 0 0 !important; display: block; }
-            .pl-tabel td.aksi::before { content: none; }
-            .pl-tabel td.aksi .aksi-grup { gap: 10px; }
-            .pl-tabel td.aksi .btn-ikon { flex: 1; width: auto; height: 42px; }
-            .pl-tabel td.pl-kosong { display: block; text-align: center; }
-            .pl-tabel td.pl-kosong::before { content: none; }
-            .pl-card-tabel { background: transparent !important; border: 0 !important; }
-            .pl-card-tabel .card-body { padding: 0; }
+            .pl-card-tabel .card-body { padding: 10px; }
+            .pl-tabel { min-width: 650px; /* Paksa tabel bisa di-scroll horizontal */ }
+            
+            .pl-tabel th, .pl-tabel td {
+                font-size: 0.8rem; 
+                padding: 8px 6px !important;
+                white-space: nowrap;
+            }
+            
+            .pl-tabel .pl-avatar { width: 28px; height: 28px; font-size: 0.75rem; margin-right: 2px; }
+            .pl-tabel .btn-ikon { width: 32px; height: 32px; font-size: 0.75rem; }
+            .pl-tabel .aksi-grup { gap: 4px; }
         }
 
         /* Modal */
         .pl-modal .modal-content { border: 0; border-radius: 18px; overflow: hidden; }
         .pl-modal .modal-header { border-bottom: 1px solid #dbe5df; padding: 18px 22px; }
-        .pl-modal .modal-title { font-family: 'Fraunces', serif; font-weight: 700; color: #0f3d2e; font-size: 1.2rem; }
+        .pl-modal .modal-title { font-family: 'Fraunces', serif; font-weight: 700; color: #0f3d2e; font-size: 1.2rem; letter-spacing: -0.3px; }
         .pl-modal .modal-body { padding: 20px 22px; }
         .pl-modal .modal-footer { border-top: 1px solid #dbe5df; background: #f4f7f5; padding: 14px 22px; }
-        .pl-modal .form-control { font-size: 1rem; padding: 11px 13px; }
+        .pl-modal .form-label { font-weight: 600; font-size: 0.9rem; }
+        .pl-modal .form-control { font-size: 0.95rem; padding: 10px 13px; font-weight: 500; }
         .pl-modal .btn { border-radius: 999px; padding: 9px 22px; font-weight: 600; }
         .pl-modal .btn-success { background: #1d6b4f; border-color: #1d6b4f; }
         .pl-modal .btn-success:hover { background: #0f3d2e; border-color: #0f3d2e; }
@@ -65,30 +103,61 @@
         </div>
     @endif
 
+    <!-- FILTER TOGGLE (KHUSUS HP) -->
+    <button class="btn pl-filter-toggle d-md-none w-100" type="button" data-bs-toggle="collapse" data-bs-target="#panelFilterPelatih" aria-expanded="{{ $jumlahFilter ? 'true' : 'false' }}" aria-controls="panelFilterPelatih">
+        <i class="fas fa-filter"></i> Filter Data Pelatih
+        @if($jumlahFilter)<span class="jml">{{ $jumlahFilter }}</span>@endif
+        <i class="fas fa-chevron-down panah"></i>
+    </button>
+
+    <!-- FORM FILTER -->
+    <div class="collapse d-md-block {{ $jumlahFilter ? 'show' : '' }}" id="panelFilterPelatih">
+        <div class="card border-0 shadow-sm mb-4 pl-filter">
+            <div class="card-body">
+                <form action="/admin/pelatih" method="GET" class="row g-3 align-items-end">
+                    <div class="col-12 col-md-5">
+                        <label class="form-label" for="f_nama">Cari Nama Pelatih</label>
+                        <input type="text" id="f_nama" name="nama" class="form-control" placeholder="Ketik nama pelatih..." value="{{ request('nama') }}">
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label class="form-label" for="f_alamat">Cari Alamat</label>
+                        <input type="text" id="f_alamat" name="alamat" class="form-control" placeholder="Ketik alamat..." value="{{ request('alamat') }}">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i> Terapkan</button>
+                    </div>
+                </form>
+                @if($jumlahFilter)
+                    <a href="/admin/pelatih" class="pl-reset"><i class="fas fa-rotate-left me-1"></i>Hapus semua filter</a>
+                @endif
+            </div>
+        </div>
+    </div>
+
     <div class="card border-0 shadow-sm pl-card-tabel">
         <div class="card-body table-responsive">
             <table class="table table-hover align-middle pl-tabel mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th>No</th>
+                        <th width="5%">No</th>
                         <th>Nama Pelatih</th>
                         <th>No HP</th>
                         <th>Alamat</th>
-                        <th>Aksi</th>
+                        <th width="15%">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($pelatih as $index => $p)
                     <tr>
-                        <td class="no" data-label="No">{{ $index + 1 }}</td>
-                        <td class="fw-bold nama" data-label="Nama Pelatih">
+                        <td>{{ $index + 1 }}</td>
+                        <td class="nama">
                             <div class="nama-sel">
                                 <span class="pl-avatar">{{ strtoupper(mb_substr($p->nama_pelatih, 0, 1)) }}</span>
                                 <span>{{ $p->nama_pelatih }}</span>
                             </div>
                         </td>
-                        <td data-label="No HP">{{ $p->no_hp }}</td>
-                        <td data-label="Alamat">{{ $p->alamat }}</td>
+                        <td>{{ $p->no_hp }}</td>
+                        <td>{{ $p->alamat }}</td>
                         <td class="aksi">
                             <div class="aksi-grup">
                                 <button class="btn btn-sm btn-primary btn-ikon" data-bs-toggle="modal" data-bs-target="#modalEditPelatih"
@@ -109,7 +178,9 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="text-center pl-kosong">Belum ada data pelatih.</td>
+                        <td colspan="5" class="text-center pl-kosong">
+                            {{ $jumlahFilter ? 'Tidak ada data pelatih yang cocok dengan filter.' : 'Belum ada data pelatih.' }}
+                        </td>
                     </tr>
                     @endforelse
                 </tbody>
